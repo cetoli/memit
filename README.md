@@ -1,0 +1,4 @@
+memit
+=====
+
+Research on memetics
