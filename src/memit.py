@@ -1,6 +1,6 @@
 """
 ############################################################
-Memit - Serious Game in cavalier projection for memetics
+Memit - All
 ############################################################
 
 :Author: *Carlo E. T. Oliveira*
@@ -8,12 +8,15 @@ Memit - Serious Game in cavalier projection for memetics
 :Date: $Date: 2013/03/17  $
 :Status: This is a "work in progress"
 :Revision: $Revision: 0.1 $
-:Home: `Labase http://labase.selfip.org/`__
-:Copyright: 2011, `GPL http://is.gd/3Udt`__. 
-__author__  = "Carlo E. T. Oliveira (carlo@nce.ufrj.br) $Author: carlo $"
-__version__ = "0.1 $Revision$"[10:-1]
-__date__    = "2013/03/17 $Date$"
+:Home: `Labase <http://labase.selfip.org/>`__
+:Copyright: 2011, `GPL <http://is.gd/3Udt>`__.
+
+Serious Game in cavalier projection for memetics.
+
 """
+__author__  = "Carlo E. T. Oliveira (carlo@nce.ufrj.br) $Author: carlo $"
+__version__ = "0.2 $Revision$"[10:-1]
+__date__    = "2013/03/17 $Date$"
 
 REPO = '/studio/memit/%s'
 
@@ -58,6 +61,8 @@ EVENT = ("onfocusin onfocusout onactivate onload onclick onkeydown onkeyup" + \
 
 
 class Dialog:
+    """ Floating panel holding an editable text area. :ref:`dialog`
+    """
     def __init__(self, gui, img = REPO%'paje.png',  text = '', act = lambda x:None):
         self._rect=gui.rect(0,100, 800, 440, style= {
             'fillOpacity':'0.7', 'fill':'black'})
@@ -85,6 +90,8 @@ class Dialog:
 
  
 class GUI:
+    """ Factory creating SVG elements, unpacking extra arguments. :ref:`gui`
+    """
     def __init__(self,panel,data):
         self.args = {}
         self.panel = self._panel = panel
@@ -211,7 +218,7 @@ class GUI:
       return
     
 class Marker:
-    """ Colored shadow on the walls to help the user to deploy a piece in 3D
+    """ Colored shadow on the walls helping the user to deploy a piece in 3D.  :ref:`marker`
     """
     def __init__(self,gui, x, y, fill, face):
         cls='red green blue'.split()
@@ -241,7 +248,7 @@ class Marker:
         #logger('face %s ijk %s xyz %s ax %d ay %d'%(self.face,(i,j,k),(x,y,z),ax,ay))
         self.show(ax, ay)
 class Piece(Marker):
-    """ Represents the user choice when deployed insde the 3D open cube
+    """ Represents the user choice when deployed insde the 3D open cube. :ref:`piece`
     """
     def __init__(self,gui, x, y, fill, r, g, b, board, pid):
         SIDE = 70
@@ -300,7 +307,7 @@ class Piece(Marker):
         self.blue.hide()
 
 class House:
-    """ marks a 3D location inside the cube where a piece can be deployed
+    """ marks a 3D location inside the cube where a piece can be deployed. :ref:`house`
     """
     def __init__(self,gui, i, j, k, fill, r, g, b, board):
         OFF =170
@@ -339,7 +346,7 @@ class House:
         self.blue.hide()
    
 class Cube:
-    """ A 3D game board represented in a cavalier projection
+    """ A 3D game board represented in a cavalier projection. :ref:`cube`
     """
     def __init__(self,gui,bottom_image, rear_image, side_image):
         cls='red green blue'.split()
@@ -361,7 +368,7 @@ class Cube:
             part.show()
 
 class Form:
-    """ Collects demographic info and send results to the server
+    """ Collects demographic info and send results to the server. :ref:`form`
     """
     def __init__(self,gui=None):
         self._build_form(gui)
@@ -397,7 +404,7 @@ class Form:
         logger('submmit')
    
 class Phase:
-    """ A game stage with a particular scenario and pieces
+    """ A game stage with a particular scenario and pieces. :ref:`phase`
     """
     def __init__(self, gui, back_layer, component):
         print(component)
@@ -407,13 +414,19 @@ class Phase:
         self.back = [gui.image (href= bk) for bk in back+puzzle]
         self.jigs = [gui.image (href= bk) for bk in jigs]
         print(faces)
+        #: The 3D cube for this phase.
         self.cube = Cube(gui, *faces)
-        self.pieces = pieces
         gui.clear()
         Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
-        self.piece_places = [[i*j, 350 + 50 * i,610 + 50*j]
-            for j in Z2TW for i in TW2Z]
+        P_PLC = [[i*j, 350 + 50 * i,610 + 50*j] for j in Z2TW for i in TW2Z]
+        #: Original placement of pieces at phase startup.
+        self.piece_places = P_PLC
+        #: Set of pieces to play in this phase.
+        self.pieces = pieces
+            
+
     def reset(self):
+        """Rearrange all pieces into original placement. """
         [self.show(x, y) for fid, x, y in self.piece_places]
         pass
     def hide(self):
@@ -424,7 +437,7 @@ class Phase:
         [self.pieces[fid].show(x, y) for fid, x, y in self.piece_places]
         
 class Board:
-    """ A meme game board with a 3D cube, some pieces, score and puzzle
+    """ A meme game board with a 3D cube, some pieces, score and puzzle. :ref:`board`
     """
     def remove(self,piece):
         "acts as a default null house"
@@ -455,6 +468,7 @@ class Board:
         self.blue = Marker(gui, 300,300,'blue',(1,1,0))
         
     def place(self, *a):
+        """Placement state method. Assumes _place (active) or _idle states"""
         pass
     def _place(self, position = None, house = None):
         self.piece.place(*position, house = house)
@@ -465,6 +479,7 @@ class Board:
     def _drag(self, p =None):
         i, j, k = self._ijk
     def drag(self, p =None):
+        """Enable placement of pieces. Arg p is the piece being dragged """
         self.piece = p
         self.place = self._place
     def __init__(self,gui):
@@ -525,6 +540,7 @@ class Board:
         self.phases[0].show()
          
 def main(dc,pn, gui, repo):
+    """ Starting point """
     global REPO
     REPO = repo
     return Board(gui)

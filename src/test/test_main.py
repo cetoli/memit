@@ -10,8 +10,8 @@ Memit - Serious Game in cavalier projection for memetics
 :Date: $Date: 2013/03/17  $
 :Status: This is a "work in progress"
 :Revision: $Revision: 0.1 $
-:Home: `Labase http://labase.selfip.org/`__
-:Copyright: 2011, `GPL http://is.gd/3Udt`__. 
+:Home: `<Labase http://labase.selfip.org/>`__
+:Copyright: 2011, `<GPL http://is.gd/3Udt>`__. 
 """
 __author__  = "Carlo E. T. Oliveira (carlo@nce.ufrj.br) $Author: carlo $"
 __version__ = "0.1 $Revision$"[10:-1]
