@@ -20,7 +20,7 @@ from fabric.api import local, settings, cd, run, lcd
 from base64 import b64decode as b6d
 import mechanize as mcz
 from tempfile import mkdtemp
-KG_ORIGIN = '/home/carlo/Dropbox/Android/git/vitallino'
+KG_ORIGIN = '/home/carlo/Dropbox/Android/git/memit'
 KG_DEST = '/home/carlo/Dropbox/Public/labase/kwarwp'
 #KG_DEST = '/tmp/kwarwp'
 SOURCES = '*.py'
@@ -31,10 +31,10 @@ DESTS = '/src /src /src /src/public/image / /libs'.split()
 def hello():
     print("Hello world!")
 PLAT = 'https://activufrj.nce.ufrj.br/'
-PLAT = 'http://localhost:8888/'
+#PLAT = 'http://localhost:8888/'
 def __actdep(paswd):
     _k_copy()
-def __actinit(mech):
+def __actinit(mech,paswd):
     mech.open(PLAT)
     
     mech.select_form(nr=0)
@@ -50,12 +50,12 @@ def __actup(mech, filename, folder = 'file/%smemit', orig = '/src/', single = No
         mech.open(PLAT+folder%'delete/'+ '/' + filename).read()
     avs = mech.open(PLAT+folder%'').read()
     mech.select_form(nr=0)
-    mech.add_file(open(KG_ORIGIN + src + single or filename), 'text/plain', filename)
+    mech.add_file(open(KG_ORIGIN + orig + (single or filename)), 'text/plain', filename)
     results = mech.submit().read()
-def actdep(paswd):
+def actdep(paswd="bGFiYXNlNGN0MXY="):
     mech = mcz.Browser()
-    __actinit(mech)
-    for finename in 'meme.html memit.py'.split():
+    __actinit(mech,paswd)
+    for filename in 'meme.html memit.py'.split():
         __actup(mech, filename)
 def actfig(paswd):
     mech = mcz.Browser()

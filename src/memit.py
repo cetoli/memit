@@ -276,7 +276,7 @@ class Piece(Marker):
         self.avatar.setAttribute("visibility",'visible')
     def do_markers(self, *a):
         pass
-    def _idle(self, *a):
+    def _busy(self, *a):
         pass
     def on_over(self, ev):
         self.do_markers(ev)
@@ -325,18 +325,21 @@ class House:
         self._ijk = (i, j, k)
 
     def on_over(self, ev):
+        """Projects three guiding shadows on the orthogonal cube walls"""
         i, j, k = self._ijk
         self.red.on_over(ev, i, j, k)
         self.green.on_over(ev, i, j, k)
         self.blue.on_over(ev, i, j, k)
-    def _idle(self, *a):
+    def _busy(self, *a):
+        """State method associated with a busy occupied house."""
         pass
     def _place(self, ev):
-        "ask board to add a piece to itself and disable new deployments here"
+        """State method of a house that can recieve a piece, register it to the
+        board and disable new deployments here"""
         self.board.place(self._ijk, self)
-        self.place = self._idle
+        self.place = self._busy
     def remove(self,piece):
-        "set state to receive a piece"
+        """Remove a piece from the house and set state to receive a new piece"""
         self.place = self._place
     def on_click(self, ev):
         self.place(ev)
@@ -346,7 +349,7 @@ class House:
         self.blue.hide()
    
 class Cube:
-    """ A 3D game board represented in a cavalier projection. :ref:`cube`
+    """ A 3D game memetic space represented in a cavalier projection. :ref:`cube`
     """
     def __init__(self,gui,bottom_image, rear_image, side_image):
         cls='red green blue'.split()
@@ -457,10 +460,12 @@ class Board:
         self.face_imgs, self.back_imgs =self._parse_response(response, 'face backs')
         self._build_phases()
     def _load_figures(self, response):
+        logger('loading from memit type 2')
         self.piece_imgs, self.jig_imgs, self.puzzle_imgs = self._parse_response(
             response, 'piece jigs puzzle')
         self.gui.request('/rest/studio/memit?type=2', self._load_scenes)
     def _load_inventory_from_server(self):
+        logger('loading from memit type 1')
         self.gui.request('/rest/studio/memit?type=1', self._load_figures)
     def _build_markers(self, gui):
         self.red = Marker(gui, 300,300,'red',(0,1,1))
@@ -468,13 +473,13 @@ class Board:
         self.blue = Marker(gui, 300,300,'blue',(1,1,0))
         
     def place(self, *a):
-        """Placement state method. Assumes _place (active) or _idle states"""
+        """Placement state method. Assumes _place (active) or _busy states"""
         pass
     def _place(self, position = None, house = None):
         self.piece.place(*position, house = house)
-        self.place = self._idle
+        self.place = self._busy
         return self.piece
-    def _idle(self, *a):
+    def _busy(self, *a):
         pass
     def _drag(self, p =None):
         i, j, k = self._ijk
