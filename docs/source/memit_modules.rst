@@ -45,7 +45,7 @@ Graphics resources required to draw on the top of browser canvas.
 Marker
 ====================
 
-A projetion of the selected dropping spot on each of three dimensions ortogonal
+A projection of the selected dropping spot on each of three dimensions orthogonal
 planes. This projection helps to localize the selection placement by reducing the
 dimensionality to a two dimensional surface.
 
