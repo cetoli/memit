@@ -104,6 +104,8 @@ class TestMain(mocker.MockerTestCase):
     expect(self.mg.group(KWARGS)).count(1,3).result(self.ma)
     expect(self.mg.image(KWARGS)).count(1,9).result(self.ma)#jigs
     expect(self.mg.image(KWARGS)).count(1,9).result(self.ma)#jigs
+    expect(self.ma.setAttribute(ARGS)).count(1,9).result(self.ma)#jigs
+    expect(self.ma.setAttribute(ARGS)).count(1,9).result(self.ma)#jigs
     #---FACES---
     expect(self.mg.image(KWARGS)).count(1,3).result(self.ma)#jigs
     expect(self.mg.clear()).count(1,21)
@@ -113,16 +115,19 @@ class TestMain(mocker.MockerTestCase):
     #---MARKERS---
     expect(self.mg.rect(KWARGS)).count(1,3*9).result(self.ma)#jigs
     expect(self.ma.addEventListener(ARGS)).count(1,81)
+    expect(self.mg.group(ARGS)).count(1,3*9).result(self.ma)
+    #---RELAY---
+    expect(self.mg.up(ARGS)).count(1,3*9)
     #---START---
     expect(self.ma.setAttribute(ARGS)).count(1,3)
     expect(self.ma.setAttribute(ARGS)).count(1,5*9)
     self._replay_and_create_place()
     class Response:
       text =str(dict(status=0,result=['%s%02d_%02d.png'%(name,kind,piece)
-        for name in 'piece jigs puzzle'.split()
+        for name in 'piece jigs puzzle_'.split()
         for piece in range(9) for kind in [0,1]]))
     self.app._load_figures(Response)
-    assert 'puzzle00_00.png' in str(self.app.puzzle_imgs), 'self.app.puzzle_imgs %s'%self.app.puzzle_imgs
+    #assert 'puzzle_00.png' in str(self.app.puzzle_imgs), 'self.app.puzzle_imgs %s'%self.app.puzzle_imgs
     Response.text =str(dict(status=0,result=['%s%02d_%02d.png'%(name,kind,piece)
         for name in 'face back'.split()
         for piece in range(3) for kind in range(7)]))

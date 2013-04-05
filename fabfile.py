@@ -55,7 +55,8 @@ def __actup(mech, filename, folder = 'file/%smemit', orig = '/src/', single = No
 def actdep(paswd="bGFiYXNlNGN0MXY="):
     mech = mcz.Browser()
     __actinit(mech,paswd)
-    for filename in 'meme.html memit.py'.split():
+    # filename in 'meme.html memit.py'.split():
+    for filename in 'memit.py'.split():
         __actup(mech, filename)
 def actfig(paswd):
     mech = mcz.Browser()

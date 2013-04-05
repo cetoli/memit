@@ -6,14 +6,14 @@ Memit - Serious Game in cavalier projection for memetics
 
 :Author: *Carlo E. T. Oliveira*
 :Contact: carlo@nce.ufrj.br
-:Date: $Date: 2013/03/17  $
+:Date: 2013/03/29
 :Status: This is a "work in progress"
-:Revision: $Revision: 0.1 $
+:Revision: 0.1.0
 :Home: `Labase <http://labase.selfip.org/>`__
-:Copyright: 2011, `GPL <http://is.gd/3Udt>`__. 
-__author__  = "Carlo E. T. Oliveira (carlo@nce.ufrj.br) $Author: carlo $"
-__version__ = "0.1 $Revision$"[10:-1]
-__date__    = "2013/03/17 $Date$"
+:Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
+__author__ = "Carlo E. T. Oliveira (carlo@nce.ufrj.br)"
+__version__ = "0.1"
+__date__ = "2013/03/29"
 -->
 <html>
 <head>
@@ -22,16 +22,10 @@ __date__    = "2013/03/17 $Date$"
 <meta http-equiv="content-type" content="application/xml;charset=utf-8" />
 <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="/file/memit/brython.js"></script>
-<script type="text/javascript">
-    var jsptdate = new Date();
-    function jsptrand(){ return Number(Math.floor(Math.random()*1001))}
-</script>
-<!--<script type="text/python" src="/file/memit/memit.py">
-</script>
--->
 <script type="text/python" src="/file/memit/memit.py">
 </script>
 <script type="text/python">
+logger('meme html')
 main(doc, doc['panel'], GUI(doc['panel'],doc['data']), '/studio/memit/%s')
 </script>
 </head>
@@ -42,10 +36,5 @@ main(doc, doc['panel'], GUI(doc['panel'],doc['data']), '/studio/memit/%s')
   <g id="panel">
   </g>
 </div>
-
-
 </body>
 </html>
-<!--
-"""
-#-->

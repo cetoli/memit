@@ -13,18 +13,19 @@ Memit - All
 
 Serious Game in cavalier projection for memetics.
 
-"""
 __author__  = "Carlo E. T. Oliveira (carlo@nce.ufrj.br) $Author: carlo $"
 __version__ = "0.2 $Revision$"[10:-1]
 __date__    = "2013/03/17 $Date$"
 
-REPO = '/studio/memit/%s'
+"""
+
+REPO = '/studio/%s'
 
 def _logger(*a):
     print(a)
-        
 
 if not '__package__' in dir():
+    log ('if not __package__')
     import svg
     from html import TEXTAREA
     logger = log
@@ -32,7 +33,7 @@ if not '__package__' in dir():
 else:
     logger = _logger
     pass
-
+"""
 def noop(nop=''):
     pass
 HANDLER = {"_NOOP_":'noop()'}
@@ -53,7 +54,8 @@ if not '__package__' in dir():
 def eventify(owner):
     #alert('owner :'+owner)
     HANDLER[owner]()
-    
+"""
+
 TRANS = "translate rotate scale skewX skewY matrix".split()
 
 EVENT = ("onfocusin onfocusout onactivate onload onclick onkeydown onkeyup" + \
@@ -93,6 +95,9 @@ class GUI:
     """ Factory creating SVG elements, unpacking extra arguments. :ref:`gui`
     """
     def __init__(self,panel,data):
+        global SVG
+        SVG = svg
+        logger('GUI __init__')
         self.args = {}
         self.panel = self._panel = panel
         self.data = data
@@ -151,6 +156,10 @@ class GUI:
         return t
     def set(self, element):
         self.panel = element
+    def up(self, element):
+        self.panel <= element
+    def cling(self,level, element):
+        level <= element
     def clear(self):
         self.panel = self._panel
     def remove(self, element):
@@ -158,38 +167,38 @@ class GUI:
 
     def text(self, text,x=150,y=25, font_size=22,text_anchor="middle",
       style= {}):
-      element = svg.text(text,x=x,y=y,
+      element = SVG.text(text,x=x,y=y,
       font_size=font_size,text_anchor=text_anchor,
       style=style)
       self.panel <= element
       return element
   
     def group(self, group= None, layer=0):
-        element = group or svg.g()
+        element = group or SVG.g()
         self.panel <= element
         layer and self.set(element) or self.clear()
         return element
 
     def path(self, d,style={}, onMouseOver="noop",  onMouseOut="noop"):
-        exec('element = svg.path(d=%s,style=%s%s)'%(
+        exec('element = SVG.path(d=%s,style=%s%s)'%(
             str(d),str(style),self.get_args()))
         self.panel <= element
         return element
   
     def image(self,  href, x=0, y=0, width=100, height=50, **kw):
-        exec('element = svg.image(href="%s", x=%i, y=%i, width=%i, height=%i%s)'%(
+        exec('element = SVG.image(href="%s", x=%i, y=%i, width=%i, height=%i%s)'%(
             href, x, y, width, height,self._get_kwargs(kw)))
         self.panel <= element
         return element
   
     def ellipse(self,  href, cx=0, cy=0, rx=100, ry=50, style= {}, **kw):
-        exec('element = svg.ellipse(cx=%i, cy=%i, rx=%i, ry=%i,style=%s%s)'%(
+        exec('element = SVG.ellipse(cx=%i, cy=%i, rx=%i, ry=%i,style=%s%s)'%(
             cx, cy, rx, ry,str(style),self.get_args()))
         self.panel <= element
         return element
   
     def rect(self, x=0, y=0, width=100, height=50,style={}):
-        exec('element = svg.rect(x=%i, y=%i, width=%i, height=%i,style=%s%s)'%(
+        exec('element = SVG.rect(x=%i, y=%i, width=%i, height=%i,style=%s%s)'%(
             x, y, width, height,str(style),self.get_args()))
         self.panel <= element
         return element
@@ -260,8 +269,8 @@ class Piece(Marker):
         #         style=dict(fill='navajowhite', fillOpacity= 0.7))
         self.avatar = gui.image(href=REPO%fill,
                     x=x ,y=y, width=SIDE,height=SIDE)
-        self.ascore= gui.text(pid, x= 45, y = 300+ pid*30,
-                 style=dict(fill='black', fillOpacity= 0.7))
+        #self.ascore= gui.text(pid, x= 45, y = 300+ pid*30,
+        #         style=dict(fill='black', fillOpacity= 0.7))
         self.avatar.addEventListener('mouseover', self.on_over)
         #self.avatex.addEventListener('mouseover', self.on_over)
         self.avatar.addEventListener('mouseout', self.on_out)
@@ -285,6 +294,10 @@ class Piece(Marker):
         self.red.on_over(ev, i, j, k)
         self.green.on_over(ev, i, j, k)
         self.blue.on_over(ev, i, j, k)
+    def next_jig(self):
+        """Remove the next piece from the puzzle. """
+        self.board.next_jig()
+        self.next_jig = self._busy
     def on_click(self, ev):
         self.board.drag(self)
     def place(self, z, y, x, house):
@@ -293,14 +306,15 @@ class Piece(Marker):
         self.avatar.setAttribute("style",
             "fill: %s; fill-opacity: %f"%(self.fill,  0.3+z*0.35))
         self._ijk = (z, y, x)
-        OFFX, OFFY = 170, 170
+        OFFX, OFFY = 170-35, 170-35
         ax = OFFX+x*100+71*z
         ay = OFFY+y*100+71*z
         self.show(ax, ay)
-        self.avatex.setAttribute("x",ax)
-        self.avatex.setAttribute("y",ay+10)
-        self.ascore.text = '%d=%d.%d.%d'%(self.pid,z, y, x)
+        #self.avatex.setAttribute("x",ax)
+        #self.avatex.setAttribute("y",ay+10)
+        #self.ascore.text = '%d=%d.%d.%d'%(self.pid,z, y, x)
         self.do_markers = self._on_over
+        self.next_jig()
     def on_out(self, ev):
         self.red.hide()
         self.green.hide()
@@ -315,6 +329,7 @@ class House:
         RDX = 30
         self.board = board
         self.place = self._place
+        self.level = board.house_layers[k]
         self.avatar = gui.rect(x= OFF+k*100+71*i, y = OFF+j*100+71*i,
             width=SIDE-(2-i)*RDX, height=SIDE-(2-i)*RDX,
             style=dict(fill=fill, fillOpacity= 0.2))
@@ -414,19 +429,37 @@ class Phase:
         back, puzzle, jigs, faces, pieces = component
         gui.set(back_layer)
         self.group = gui.group(layer=1)
-        self.back = [gui.image (href= bk) for bk in back+puzzle]
-        self.jigs = [gui.image (href= bk) for bk in jigs]
+        #self.back = [gui.image(href= REPO%bk) for bk in puzzle]
+        puzzle.sort()
+        self.back = [gui.image(REPO%bk, 150, 0,200,100) for bk in puzzle]
+        for puz in self.back[1:]:
+            puz.setAttribute("visibility",'hidden')
+        self.current_jig = 0
+        #self.jigs = [gui.image (href= REPO%bk) for bk in jigs]
         print(faces)
         #: The 3D cube for this phase.
         self.cube = Cube(gui, *faces)
         gui.clear()
         Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
-        P_PLC = [[i*j, 350 + 50 * i,610 + 50*j] for j in Z2TW for i in TW2Z]
+        #P_PLC = [[i+j*3, 350 + 50 * i,610 + 50*j] for j in Z2TW for i in TW2Z]
+        def ij(i,j):
+            k = i%2
+            l = i//2
+            return [i+j*3, 10 + 610 * k,10 +  210* k +210* l + 70*j]
+        
+        P_PLC = [ij(i,j) for j in Z2TW for i in TW2Z]
         #: Original placement of pieces at phase startup.
         self.piece_places = P_PLC
         #: Set of pieces to play in this phase.
         self.pieces = pieces
             
+
+    def next_jig(self):
+        """Remove the next piece from the puzzle. """
+        #self.back[self.current_jig].setAttribute("visibility",'hidden')
+        #self.current_jig += 1
+        #self.back[self.current_jig].setAttribute("visibility",'visible')
+        pass
 
     def reset(self):
         """Rearrange all pieces into original placement. """
@@ -457,15 +490,15 @@ class Board:
             ]
             for prefix in prefices.split()]
     def _load_scenes(self, response):
+        logger('loading from memit type 2, ')
         self.face_imgs, self.back_imgs =self._parse_response(response, 'face backs')
         self._build_phases()
     def _load_figures(self, response):
-        logger('loading from memit type 2')
         self.piece_imgs, self.jig_imgs, self.puzzle_imgs = self._parse_response(
-            response, 'piece jigs puzzle')
+            response, 'piece jigs puzzle_')
+        logger('loading from memit type 1 pieces :%s'%self.piece_imgs)
         self.gui.request('/rest/studio/memit?type=2', self._load_scenes)
     def _load_inventory_from_server(self):
-        logger('loading from memit type 1')
         self.gui.request('/rest/studio/memit?type=1', self._load_figures)
     def _build_markers(self, gui):
         self.red = Marker(gui, 300,300,'red',(0,1,1))
@@ -477,17 +510,26 @@ class Board:
         pass
     def _place(self, position = None, house = None):
         self.piece.place(*position, house = house)
+        logger('_place %s %s %s'%(house.level,self.piece.avatar,self.piece))
+        #self.gui.set(house.level)
+        #self.gui.up(self.piece.avatar)
+        #self.gui.clear()
+        #self.gui.cling(house.level,self.piece.avatar)
         self.place = self._busy
         return self.piece
     def _busy(self, *a):
         pass
     def _drag(self, p =None):
         i, j, k = self._ijk
+    def next_jig(self):
+        """Remove the next piece from the puzzle. """
+        self.phases[0].next_jig()
     def drag(self, p =None):
         """Enable placement of pieces. Arg p is the piece being dragged """
         self.piece = p
         self.place = self._place
     def __init__(self,gui):
+        logger('Board __init__ %s'%gui)
         self.gui = gui
         self.houses = []
         self.phases = []
@@ -497,7 +539,10 @@ class Board:
     def _build_layers(self,gui):
         self.back_layer = gui.group(layer=0)
         self.marker_layer = gui.group()
+        gui.clear()
+        gui.set(self.marker_layer)
         self._build_markers(gui)
+        self.house_layers = [gui.group(None,0) for ly in range(3)]
         gui.clear()
         self.pieces_layer = gui.group(layer=0)
     def _build_inventory_locally(self):
@@ -521,33 +566,57 @@ class Board:
         CLS='red green blue'.split()
         Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
         KINDS = [0,1]#[0]*2+[1]*5
+        self.avatar = gui.image(href=REPO%'memit/background_base.png', x= 0, y = 0,
+            width=800, height=600, style=dict(fill='blue', fillOpacity= 1))
+        self.pump = gui.image(href=REPO%'memit/bomba.png', x= 390, y = 5,
+            width=400, height=112, style=dict(fill='blue', fillOpacity= 1))
+        self.drop = gui.image(href=REPO%'memit/gota.png', x= 750, y = 150,
+            width=40, height=52, style=dict(fill='blue', fillOpacity= 1))
         self._build_layers(gui)
-        RGB = [self.red, self.green, self.blue]
+        self.drop2 = gui.image(href=REPO%'memit/gota.png', x= 750, y = 250,
+            width=40, height=52, style=dict(fill='blue', fillOpacity= 1))
+        self.puzzle = gui.image(href=REPO%'memit/puzzle00_00.png', x= 150, y = 0,
+            width=200, height=100, style=dict(fill='blue', fillOpacity= 1))
+        r, g, b = RGB = [self.red, self.green, self.blue]
         #piece_places = [[[350 + 50 * i,610 + 50*j]
         #    for j in Z2TW] for i in TW2Z]
-        piece_places = [[i*j, 350 + 50 * i,610 + 50*j]
+        piece_places = [[i+j*3, 350 + 50 * i,610 + 50*j]
             for j in Z2TW for i in TW2Z]
         print (piece_places)
         gui.set(self.pieces_layer)
+        def create_hidden(fid, x, y, kind):
+            piece = Piece(gui, x, y, self.piece_imgs[kind][fid], r, g, b, self, fid)
+            piece.hide()
+            return piece
+        
         pc = self.pieces = [
-            [Piece(gui, x, y, self.piece_imgs[kind][fid], *RGB, board = self, pid = fid)
-            for fid, x, y in piece_places] for kind in KINDS]
+            [create_hidden(fid, x, y , kind)
+            for fid, y, x in piece_places] for kind in KINDS]
         logger('to b form')
         gui.clear()
-        piece_imgs = [pc[i] for i in [0,0,1,1,1,1,1]]
+        piece_imgs = [pc[i] for i in [1,1,1,1,1,1,1]]
+        gui.set(self.back_layer)
         self.phases = [Phase(gui, self.back_layer, components)
             for components in zip(self.back_imgs,
                 self.puzzle_imgs, self.jig_imgs, self.face_imgs, piece_imgs)]
-        gui.set(self.back_layer)
-        self.houses = [House(gui, i, j, k, CLS[i], *RGB, board = self)
+        gui.clear()
+        gui.set(self.marker_layer)
+        self.houses = [House(gui, i, j, k, CLS[i], r, g, b, self)
                        for k in Z2TW for j in Z2TW for i in TW2Z]
         gui.clear()
+        gui.up(self.back_layer)
+        gui.clear()
+        gui.up(self.marker_layer)
+        gui.clear()
+        gui.up(self.pieces_layer)
+        gui.clear()
         self.phases[0].show()
-         
+      
 def main(dc,pn, gui, repo):
     """ Starting point """
+    logger('Starting point')
     global REPO
-    REPO = repo
+    #REPO = repo
     return Board(gui)
     """
     #for phase in phases:
