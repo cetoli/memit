@@ -28,10 +28,13 @@ if not '__package__' in dir():
     log ('if not __package__')
     import svg
     from html import TEXTAREA
+    #from time import setinterval
+    import time
     logger = log
     pass
 else:
     logger = _logger
+    setinterval = lambda a,b:None
     pass
 """
 def noop(nop=''):
@@ -435,41 +438,37 @@ class Phase:
     """ A game stage with a particular scenario and pieces. :ref:`phase`
     """
     def __init__(self, gui, back_layer, puzzle, component):
-        #print('COMPONENT',component)
-        #print('PUZZLE',puzzle)
         back, jigs, faces, pieces = component
         gui.set(back_layer)
         self.group = gui.group(layer=1)
-        #self.back = [gui.image(href= REPO%bk) for bk in puzzle]
-        #puzzle.sort()
-        #print('PUZZLE',puzzle)
-        #self.back = [gui.image(REPO%bk, 150+50*i, 0+50*i,200,100) for i,bk in enumerate(puzzle)]
-        self.back = [gui.image(REPO%bk, 150, 0,200,100) for bk in puzzle]
-        #print('PUZZLEback',[150+50*i for i,bk in enumerate(puzzle)])
-        for puz in self.back[:]:
-            puz.setAttribute("visibility",'hidden')
+        self.back = [gui.image(REPO%bk, 550, 150,200,100) for bk in puzzle]
+        for jig in self.back[:]:
+            jig.setAttribute("visibility",'hidden')
         self.current_jig = -1
-        #self.jigs = [gui.image (href= REPO%bk) for bk in jigs]
         #: The 3D cube for this phase.
         self.cube = Cube(gui, *faces)
         gui.clear()
         Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
         #P_PLC = [[i+j*3, 350 + 50 * i,610 + 50*j] for j in Z2TW for i in TW2Z]
+        ## Brython failure FIX
         def ij(i,j):
             k = i%2
             l = i//2
-            return [i+j*3, 10 + 610 * k,10 +  210* k +210* l + 70*j]
+            return [i+j*3, 10 + 610 * k,150 +  210* k +210* l + 70*j]
         
         P_PLC = [ij(i,j) for j in Z2TW for i in TW2Z]
         #: Original placement of pieces at phase startup.
         self.piece_places = P_PLC
         #: Set of pieces to play in this phase.
         self.pieces = pieces
+        
+        
             
 
     def next_jig(self):
         """Remove the next piece from the puzzle. """
         print(self.back, self.current_jig, self.current_jig +1)
+        
         if self.current_jig >= 0:
             self.back[self.current_jig].setAttribute("visibility",'hidden')
         self.current_jig += 1
@@ -539,7 +538,18 @@ class Board:
         i, j, k = self._ijk
     def next_jig(self):
         """Remove the next piece from the puzzle. """
+        self.value = 0
+
         self.phases[0].next_jig()
+        print(self.phases[0].current_jig)
+        if self.phases[0].current_jig >= 9:
+            self.inc = 0
+            self.value = 0
+            __ = [drop.setAttribute('visibility', 'hidden') for drop in self.drops]
+            
+            time.clear_interval()
+            #time.set_interval(self.tick,3000)
+
     def drag(self, p =None):
         """Enable placement of pieces. Arg p is the piece being dragged """
         self.piece = p
@@ -586,11 +596,9 @@ class Board:
             width=800, height=600, style=dict(opacity= 1))
         self.pump = gui.image(href=REPO%'memit/bomba.png', x= 390, y = 5,
             width=400, height=112, style=dict(opacity= 1))
-        self.drop = gui.image(href=REPO%'memit/gota.png', x= 750, y = 150,
-            width=40, height=52,opacity= 0.6, style=dict(opacity= 0.6))
-        self.drop2 = gui.image(href=REPO%'memit/gota.png', x= 750, y = 250,
-            width=40, height=52,opacity= 0.6, style=dict(opacity= 0.6))
-        self.puzzle = gui.image(href=REPO%'memit/puzzle00_00.png', x= 150, y = 0,
+        self.drops = [gui.image(REPO%'memit/gota.png',750, 50 + 100*i,
+            40, 52) for i in range(6)]
+        self.puzzle = gui.image(href=REPO%'memit/puzzle00_00.png', x= 550, y = 150,
             width=200, height=100, style=dict(fill='blue', fillOpacity= 1))
         self._build_layers(gui)
         r, g, b = RGB = [self.red, self.green, self.blue]
@@ -629,6 +637,25 @@ class Board:
         gui.clear()
         self.phases[0].reset()
         self.next_jig()
+        #: initialize pump digits, pump value and start 100ms timer
+        self.digits = [
+            gui.text('0', 425 +50*i, 65, 48, 'middle', {'fill': 'white'})
+            for i in range(4)]
+        self.value =0
+        self.inc =1
+        time.set_interval(self.tick,100)
+        
+    def tick(self):
+        """Time tick updates pump display value and makes the drops fall"""
+        value = self.value //10
+        for i, drop in enumerate(self.drops):
+            y = 50 + (i * 100 + (10 * self.value) % 100) % 500
+            drop.setAttribute('y' , y)
+        #print ('tick', value, value %10, value //10)
+        for i in range(4)[::-1]:
+            self.digits[i].text = str(value % 10)
+            value //= 10
+        self.value += self.inc
       
 def main(dc,pn, gui, repo):
     """ Starting point """
