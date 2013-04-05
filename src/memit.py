@@ -298,13 +298,23 @@ class Piece(Marker):
         """Remove the next piece from the puzzle. """
         self.board.next_jig()
         self.next_jig = self._busy
+    def _next_jig(self):
+        """Remove the next piece from the puzzle. """
+        self.board.next_jig()
+        self.next_jig = self._busy
     def on_click(self, ev):
         self.board.drag(self)
+    def reset(self, x, y):
+        self.house.remove(self)
+        self.house = self.board
+        self.avatar.setAttribute("opacity", 1.0)
+        self.show(x, y)
+        self.do_markers = self._busy
+        self.next_jig = self._next_jig
     def place(self, z, y, x, house):
         self.house.remove(self)
         self.house = house
-        self.avatar.setAttribute("style",
-            "fill: %s; fill-opacity: %f"%(self.fill,  0.3+z*0.35))
+        self.avatar.setAttribute("opacity", 0.4+z*0.3)
         self._ijk = (z, y, x)
         OFFX, OFFY = 170-35, 170-35
         ax = OFFX+x*100+71*z
@@ -424,19 +434,22 @@ class Form:
 class Phase:
     """ A game stage with a particular scenario and pieces. :ref:`phase`
     """
-    def __init__(self, gui, back_layer, component):
-        print(component)
-        back, puzzle, jigs, faces, pieces = component
+    def __init__(self, gui, back_layer, puzzle, component):
+        #print('COMPONENT',component)
+        #print('PUZZLE',puzzle)
+        back, jigs, faces, pieces = component
         gui.set(back_layer)
         self.group = gui.group(layer=1)
         #self.back = [gui.image(href= REPO%bk) for bk in puzzle]
-        puzzle.sort()
+        #puzzle.sort()
+        #print('PUZZLE',puzzle)
+        #self.back = [gui.image(REPO%bk, 150+50*i, 0+50*i,200,100) for i,bk in enumerate(puzzle)]
         self.back = [gui.image(REPO%bk, 150, 0,200,100) for bk in puzzle]
-        for puz in self.back[1:]:
+        #print('PUZZLEback',[150+50*i for i,bk in enumerate(puzzle)])
+        for puz in self.back[:]:
             puz.setAttribute("visibility",'hidden')
-        self.current_jig = 0
+        self.current_jig = -1
         #self.jigs = [gui.image (href= REPO%bk) for bk in jigs]
-        print(faces)
         #: The 3D cube for this phase.
         self.cube = Cube(gui, *faces)
         gui.clear()
@@ -456,14 +469,17 @@ class Phase:
 
     def next_jig(self):
         """Remove the next piece from the puzzle. """
-        #self.back[self.current_jig].setAttribute("visibility",'hidden')
-        #self.current_jig += 1
-        #self.back[self.current_jig].setAttribute("visibility",'visible')
+        print(self.back, self.current_jig, self.current_jig +1)
+        if self.current_jig >= 0:
+            self.back[self.current_jig].setAttribute("visibility",'hidden')
+        self.current_jig += 1
+        self.back[self.current_jig].setAttribute("visibility",'visible')
         pass
 
     def reset(self):
         """Rearrange all pieces into original placement. """
-        [self.show(x, y) for fid, x, y in self.piece_places]
+        self.group.setAttribute('visibility','visible')
+        [self.pieces[fid].reset(x, y) for fid, x, y in self.piece_places]
         pass
     def hide(self):
         self.group.setAttribute('visibility','hidden')
@@ -486,7 +502,7 @@ class Board:
         #figures = resp['result']
         return [
             [[img for img in _figures()
-                if ('%s0%d'%(prefix, infix)) in img] for infix in range(7)
+                if ('%s0%d'%(prefix, infix)) in img] for infix in range(10)
             ]
             for prefix in prefices.split()]
     def _load_scenes(self, response):
@@ -567,22 +583,22 @@ class Board:
         Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
         KINDS = [0,1]#[0]*2+[1]*5
         self.avatar = gui.image(href=REPO%'memit/background_base.png', x= 0, y = 0,
-            width=800, height=600, style=dict(fill='blue', fillOpacity= 1))
+            width=800, height=600, style=dict(opacity= 1))
         self.pump = gui.image(href=REPO%'memit/bomba.png', x= 390, y = 5,
-            width=400, height=112, style=dict(fill='blue', fillOpacity= 1))
+            width=400, height=112, style=dict(opacity= 1))
         self.drop = gui.image(href=REPO%'memit/gota.png', x= 750, y = 150,
-            width=40, height=52, style=dict(fill='blue', fillOpacity= 1))
-        self._build_layers(gui)
+            width=40, height=52,opacity= 0.6, style=dict(opacity= 0.6))
         self.drop2 = gui.image(href=REPO%'memit/gota.png', x= 750, y = 250,
-            width=40, height=52, style=dict(fill='blue', fillOpacity= 1))
+            width=40, height=52,opacity= 0.6, style=dict(opacity= 0.6))
         self.puzzle = gui.image(href=REPO%'memit/puzzle00_00.png', x= 150, y = 0,
             width=200, height=100, style=dict(fill='blue', fillOpacity= 1))
+        self._build_layers(gui)
         r, g, b = RGB = [self.red, self.green, self.blue]
         #piece_places = [[[350 + 50 * i,610 + 50*j]
         #    for j in Z2TW] for i in TW2Z]
         piece_places = [[i+j*3, 350 + 50 * i,610 + 50*j]
             for j in Z2TW for i in TW2Z]
-        print (piece_places)
+        #print (piece_places)
         gui.set(self.pieces_layer)
         def create_hidden(fid, x, y, kind):
             piece = Piece(gui, x, y, self.piece_imgs[kind][fid], r, g, b, self, fid)
@@ -596,9 +612,10 @@ class Board:
         gui.clear()
         piece_imgs = [pc[i] for i in [1,1,1,1,1,1,1]]
         gui.set(self.back_layer)
-        self.phases = [Phase(gui, self.back_layer, components)
+        self.puzzle_imgs = [puz[0] for puz in self.puzzle_imgs]
+        self.phases = [Phase(gui, self.back_layer, self.puzzle_imgs,  components)
             for components in zip(self.back_imgs,
-                self.puzzle_imgs, self.jig_imgs, self.face_imgs, piece_imgs)]
+                self.jig_imgs, self.face_imgs, piece_imgs)]
         gui.clear()
         gui.set(self.marker_layer)
         self.houses = [House(gui, i, j, k, CLS[i], r, g, b, self)
@@ -610,7 +627,8 @@ class Board:
         gui.clear()
         gui.up(self.pieces_layer)
         gui.clear()
-        self.phases[0].show()
+        self.phases[0].reset()
+        self.next_jig()
       
 def main(dc,pn, gui, repo):
     """ Starting point """
