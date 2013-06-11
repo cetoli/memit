@@ -25,10 +25,10 @@ __date__ = "2013/03/29"
 <script type="text/python" src="/file/memit/memit.py">
 </script>
 <script type="text/python">
-logger('meme html')
 class Gui(object):
-    def __init__(self, doc, ):
+    def __init__(self, doc):
         self.doc = doc
+        self.id = doc["doc_id"]
 
     def __getitem__(self, obid):
         return self.doc[obid]
@@ -36,13 +36,13 @@ class Gui(object):
     def __le__(self, element):
         self.doc <= element
 
-    def setAttribute(self, *x):
-        self.opacity = 0.5
+    def setAttribute(self, elem, atrribute, value):
+        self[elem].setAttribute(atrribute, value)
     
     def cling(self, to, from):
         doc[to] <= doc[from]
 
-    def send(self, x):
+    def send(self,operation **step):
         def on_complete(req):
             if req.status==200 or req.status==0:
                 doc["result"].html = req.text
@@ -51,15 +51,18 @@ class Gui(object):
 
         req = ajax()
         req.on_complete = on_complete
+        url = "/record/"+ operation
         req.open('POST',url,True)
         req.set_header("Content-Type","application/json; charset=utf-8")
-        req.send()
+        data = str(dict(self.id= step)).replace("'",'"')
+        req.send(data)
 
-main(doc, doc['panel'], GUI(doc['panel'],doc['data']), '/studio/memit/%s')
+main(GUI(doc))
 </script>
 </head>
 <body onLoad="brython(1)">
 <div id="data">
+<div id="doc_id">{{ doc_id }}</div>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
     width="800" height="600" style="border-style:solid;border-width:1;border-color:#000;">
   <g id="panel">

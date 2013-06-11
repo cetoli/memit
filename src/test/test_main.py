@@ -2,138 +2,205 @@
 # -*- coding: UTF8 -*-
 """
 ############################################################
-Memit - Serious Game in cavalier projection for memetics
+Memit - Teste
 ############################################################
 
 :Author: *Carlo E. T. Oliveira*
 :Contact: carlo@nce.ufrj.br
-:Date: $Date: 2013/03/17  $
+:Date: 2013/05/08
 :Status: This is a "work in progress"
-:Revision: $Revision: 0.1 $
-:Home: `<Labase http://labase.selfip.org/>`__
-:Copyright: 2011, `<GPL http://is.gd/3Udt>`__. 
+:Revision: 0.1.2
+:Home: `Labase <http://labase.selfip.org/>`__
+:Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 """
-__author__  = "Carlo E. T. Oliveira (carlo@nce.ufrj.br) $Author: carlo $"
-__version__ = "0.1 $Revision$"[10:-1]
-__date__    = "2013/03/17 $Date$"
+import unittest
+from meme import Meme
+import peca
 
-        
-import mocker
-from mocker import Mocker,KWARGS, ARGS, ANY, CONTAINS, MATCH, expect
-#from kwarwp import Place,Way,Border,Door,Tar,Trunk
-from memit import main
+class TestMeme(unittest.TestCase):
 
-class TestMain(mocker.MockerTestCase):
-  """Testes unitários para o Pyjamas"""
-  def __list(self):
-        #INVENTORY = {'.':Way, ' ': Border, '&':Door, '@':Tar, '%':Border}
-        ES =FS = self.mg       
-        INVENTORY = {'.':[Way,ES,None], ' ': [Border,ES,None], '&':[Door,ES,None]
-            , '@':[Tar,FS,'piche.gif'], '$':[Trunk,FS,'tronco.gif']}
-        return INVENTORY
+    def setUp(self):
+        class Gui(object):
+            def __init__(self, *x):
+                self.json = ''
+                self.count =0
 
-  def setUp(self):
-    self.mock_gui = Mocker()
-    self.mock_avt = Mocker()
-    self.mg = self.mock_gui.mock()
-    self.ma = self.mock_gui.mock()
+            def __getitem__(self, x):
+                return self
 
-  def tearDown(self):
-    self.mock_gui.restore()
-    self.mock_avt.restore()
-    self.mock_avt.verify()
-    self.mock_avt = None
-    self.app = None
-    pass
+            def __le__(self, x):
+                return self
 
-  def _expect_all_place(self):
-    "place expectations"
-    expect(self.mg.request(ARGS)).result(self.ma)
-    #expect(self.mg.handler(ARGS)).count(1,7)
-    #expect(self.mg.image(ARGS,KWARGS)).count(1)
-    #expect(self.mg.rect(ARGS,KWARGS)).count(1,2).result(self.mg)
-    #expect(self.mg.dialog(ARGS,KWARGS)).count(1,2).result(self.mg)
-    #expect(self.mg.hide()).count(0,2).result(self.mg)
-    #expect(self.mg.text(ARGS,KWARGS)).result(self.mg).count(1,6)
-    #expect(self.ma.move(ARGS))
-    #expect(self.mg.textarea(ARGS))
-    #expect(self.mg(ARGS)).count(1,96).result(self.ma)
-    ##expect(self.mg.textContent = ANY).count(0,6)
-  def _replay_and_create_place(self,p = '.&.'):
-    "create place"
-    self.mock_gui.replay()
-    #main(doc, doc['panel'], GUI(doc['panel'],doc['data']), '/studio/memit/%s')
+            def setAttribute(self, *x):
+                self.opacity = 0.5
+            
+            def cling(self, *x):
+                pass
 
-    self.app = main(self.mg, self.mg, self.mg, '/studio/memit/%s')
-    #self.app.talk = lambda a : None
-    #self.talk = self.mock_gui.patch(self.app.talk)
-    print('---- NOW OPERATIONS ----')
-  def test_create_board(self):
-    "create board"
-    self._expect_all_place()
-    self._replay_and_create_place()
-  def test_load_figures(self):
-    "load figures"
-    self._expect_all_place()
-    expect(self.mg.request(ARGS)).result(self.ma)
-    self._replay_and_create_place()
-    class Response:
-      text =str(dict(status=0,result=['%s%02d_%02d.png'%(name,kind,piece)
-        for name in 'piece jigs puzzle'.split()
-        for piece in range(9) for kind in [0,1]]))
-    self.app._load_figures(Response)
-    assert 'piece00_00.png' in str(self.app.piece_imgs), 'self.app.pieces %s'%self.app.piece_imgs
-    assert 'puzzle00_00.png' in str(self.app.puzzle_imgs), 'self.app.puzzle_imgs %s'%self.app.puzzle_imgs
-    assert 'jigs00_00.png' in str(self.app.jig_imgs), 'self.app.jig_imgs %s'%self.app.jig_imgs
-  def test_load_scenes(self):
-    "load scenes"
-    self._expect_all_place()
-    expect(self.mg.request(ARGS))
-    expect(self.mg.group(KWARGS)).count(1,3).result(self.ma)
-    expect(self.mg.ellipse(KWARGS)).count(1,3).result(self.ma)
-    expect(self.ma.setAttribute(ARGS)).count(1,3)
-    expect(self.mg.clear()).count(1,2)
-    expect(self.mg.set(ARGS)).count(1,3)
-    expect(self.mg.image(KWARGS)).count(1,9).result(self.ma)
-    expect(self.mg.text(ARGS,KWARGS)).count(1,9).result(self.ma)
-    expect(self.ma.addEventListener(ARGS)).count(1,80)
-    [expect(self.mg.text(ind,KWARGS)).result(self.ma).count(7) for ind in range(9)]
-    #---IMAGES---
-    expect(self.mg.image(KWARGS)).count(1,9).result(self.ma)
-    #---PHASES---
-    expect(self.mg.group(KWARGS)).count(1,3).result(self.ma)
-    expect(self.mg.image(KWARGS)).count(1,9).result(self.ma)#jigs
-    expect(self.mg.image(KWARGS)).count(1,9).result(self.ma)#jigs
-    expect(self.ma.setAttribute(ARGS)).count(1,9).result(self.ma)#jigs
-    expect(self.ma.setAttribute(ARGS)).count(1,9).result(self.ma)#jigs
-    #---FACES---
-    expect(self.mg.image(KWARGS)).count(1,3).result(self.ma)#jigs
-    expect(self.mg.clear()).count(1,21)
-    expect(self.mg.image(KWARGS)).count(1,80).result(self.ma)#jigs
-    expect(self.mg.set(ARGS)).count(1,21)
-    expect(self.mg.group(KWARGS)).count(1,31).result(self.ma)
-    #---MARKERS---
-    expect(self.mg.rect(KWARGS)).count(1,3*9).result(self.ma)#jigs
-    expect(self.ma.addEventListener(ARGS)).count(1,81)
-    expect(self.mg.group(ARGS)).count(1,3*9).result(self.ma)
-    #---RELAY---
-    expect(self.mg.up(ARGS)).count(1,3*9)
-    #---START---
-    expect(self.ma.setAttribute(ARGS)).count(1,3)
-    expect(self.ma.setAttribute(ARGS)).count(1,5*9)
-    self._replay_and_create_place()
-    class Response:
-      text =str(dict(status=0,result=['%s%02d_%02d.png'%(name,kind,piece)
-        for name in 'piece jigs puzzle_'.split()
-        for piece in range(9) for kind in [0,1]]))
-    self.app._load_figures(Response)
-    #assert 'puzzle_00.png' in str(self.app.puzzle_imgs), 'self.app.puzzle_imgs %s'%self.app.puzzle_imgs
-    Response.text =str(dict(status=0,result=['%s%02d_%02d.png'%(name,kind,piece)
-        for name in 'face back'.split()
-        for piece in range(3) for kind in range(7)]))
-    self.app._load_scenes(Response)
-    assert len(self.app.pieces[0]) == 9, 'self.app.pieces %s'%self.app.pieces
+            def send(self, operation, **x):
+                self.count +=1
+                self.json = x
+
+        self.gui = Gui()
+        self.gui.onclick = object()
+        self.app = Meme(self.gui)
+
+    def test_tabuleiro(self):
+        "garante que tem casas no tabuleiro."
+        self.app.build_tabuleiro(self.gui)
+        t = self.app.tabuleiro
+        self.assertEqual(len(t.casas), 27)
+    def test_mao(self):
+        "garante que tem pecas na mao."
+        self.app.build_mao(self.gui)
+        m = self.app.mao1
+        self.assertEqual(len(m.pecas), 9)
+    def test_escolhe_peca(self):
+        "peca sai da mao e vai para a base."
+        self.app.build_base(self.gui)
+        m = self.app.mao1
+        #: a peca inicia na mao
+        p = m.pecas[0]
+        self.assertEqual(p.local,m)
+        #: a peca escolhida vai para a casa
+        p.escolhida()
+        self.assertTrue('pec' in self.gui.json, "em vez json: %s"%self.gui.json)
+        self.assertEqual(self.gui.count,1,"chamado mais deuma vez %d"%self.gui.count)
+        self.assertEqual(p.local,self.app.casa)
+        self.assertEqual(len(m.pecas), 8)
+    def test_nao_pode_escolher_outra_peca(self):
+        "nao pode escolher outra peca, peca fica na mao."
+        self.app.build_base(self.gui)
+        #: a peca inicia na mao
+        p = self.app.mao1.pecas[0]
+        #: a peca escolhida vai para a casa
+        p.escolhida()
+        #: uma segunda peca nao pode ser escolhida
+        q = self.app.mao1.pecas[1]
+        q.escolhida()
+        self.assertEqual(q.local,self.app.mao1)
+    def _pega_peca_e_escolhe_casa(self):
+        "peca sai da base e vai para a casa."
+        self.app.build_base(self.gui)
+        self.m = self.app.mao1
+        self.t = self.app.tabuleiro
+        #: a peca inicia na mao
+        self.p = self.m.pecas[0]
+        #: a peca escolhida vai para a casa
+        self.p.escolhida()
+        #self.assertEqual(self.gui.count,1,"peca varias vezes:%d"%self.gui.count)
+        self.t.temporiza()
+        self.c = self.t.casas[0]
+        self.c.escolhida()
+
+    def test_escolhe_casa(self):
+        "peca vai para a casa"
+        self._pega_peca_e_escolhe_casa()
+        self.assertEquals(self.p.local, self.c)
+        self.assertTrue(self.p in self.t.pecas)
+        self.assertEquals(self.t.bomba, 0)
+
+    def test_escolhe_casa_registra(self):
+        "peca vai para a casa, regitra no banco e monta puzzle."
+        self._pega_peca_e_escolhe_casa()
+        self.assertTrue('cas' in self.gui.json, "em vez json: %s"%self.gui.json)
+        self.assertEqual(self.gui.json['cas'], 0, "em vez cas: %s"%self.gui.json['cas'])
+        self.assertEqual(self.gui.count,2,"casa varias vezes:%d"%self.gui.count)
+        self.assertEquals(self.p.local,self.c)
+        self.assertTrue(self.p in self.t.pecas)
+        self.assertEquals(self.app.casa.peca,None)
+        self.assertEquals(self.t.bomba, 0, "bomba nao mudou %d"%self.t.bomba)
+        self.assertEquals(self.t.puzzle, 1, "puzzle nao mudou %d"%self.t.puzzle)
+    def test_escolhe_peca_na_casa(self):
+        "peca volta para a base quando escolhida no tabuleiro."
+        self.app.build_base(self.gui)
+        m = self.app.mao1
+        t = self.app.tabuleiro
+        #: a peca inicia na mao
+        p = m.pecas[0]
+         #: a peca escolhida vai para a casa
+        p.escolhida()
+        c = t.casas[0]
+        c.escolhida()
+         #: a peca escolhida volta para a casa
+        p.escolhida()
+        self.assertEquals(p.local, self.app.casa)
+        self.assertEquals(self.app.casa.peca,p)
+        self.assertEquals(t.puzzle, 0, "puzzle nao zerou %d"%t.puzzle)
+    def test_escolhe_casa_sem_peca_selecionada(self):
+        "nada acontece, nenhuma peca pode ser movida para a casa."
+        self.app.build_base(self.gui)
+        m = self.app.mao1
+        t = self.app.tabuleiro
+        c = t.casas[0]
+        c.escolhida()
+        self.assertEquals(c.peca,None)
+    def test_verifica_combinacao_vencedora(self):
+        "indica nas pecas e na casa base que houve uma combinacao vencedora."
+        self.app.build_base(self.gui)
+        pecas = self.app.mao1.pecas
+        casas = self.app.tabuleiro.casas[0:9]
+        self.assertEquals(self.app.casa.peca,None)
+        return
+        #__ = [casa.recebe(peca) for casa, peca in zip(casas,pecas)]
+        __ = [peca.escolhida() or casa.escolhida() for casa, peca in zip(casas,pecas)]
+        print(self.app.casa)
+        [self.app.tabuleiro.temporiza() for t in range(10)]
+        self.assertEquals(self.app.casa._estado_corrente,self.app.casa._casa_morta)
+        self.assertEquals(self.app.casa.peca,None)
+    def test_verifica_mudanca_fase(self):
+        "rearruma as pecas na mao"
+        self.app.build_base(self.gui)
+        pecas = [p for p in self.app.mao1.pecas]
+        casas = self.app.tabuleiro.casas[0:9]
+        self.t = self.app.tabuleiro
+        #__ = [casa.recebe(peca) for casa, peca in zip(casas,pecas)]
+        __ = [peca.escolhida() or casa.escolhida() for casa, peca in zip(casas,pecas)]
+        [self.app.tabuleiro.temporiza() for t in range(10)]
+        self.assertEquals(self.app.fase, 1, "fase nao mudou : %d"%self.app.fase)
+        self.assertEqual(self.gui.count,19,"casa varias vezes:%d"%self.gui.count)
+        self.assertEquals(self.app.casa.peca,None)
+        self.assertTrue('fas' in self.gui.json)
+        self.assertEquals(self.gui.json['pcs'] ,range(9), "not %s"%self.gui.json['pcs'])
+        [self.assertEquals(p.local,c) for p, c in zip(pecas,casas)]
+        self.assertEquals(self.t.bomba, 0)
+        self.assertEquals(self.t.puzzle, 0)
+
+    def test_jogada_apos_mudanca_fase(self):
+        "joga o inicio da proxima fase"
+        self.app.build_base(self.gui)
+        pecas = [p for p in self.app.mao1.pecas]
+        casas = self.app.tabuleiro.casas[0:9]
+        self.t = self.app.tabuleiro
+        #__ = [casa.recebe(peca) for casa, peca in zip(casas,pecas)]
+        __ = [peca.escolhida() or casa.escolhida() for casa, peca in zip(casas,pecas)]
+        [self.app.tabuleiro.temporiza() for tempo in range(88)]
+        self.assertEqual(self.t.pingo, 8)
+        self.assertEquals(self.t.bomba, 7)
+        self._pega_peca_e_escolhe_casa()
+        self.assertEquals(self.t.puzzle, 1)
+        self.assertEquals(self.p.local, self.c)
+        self.assertTrue(self.p in self.t.pecas)
+
+    def test_verifica_fim_de_jogo(self):
+        "terminou todas as fases"
+        self.app.build_base(self.gui)
+        pecas = [p for p in self.app.mao1.pecas]
+        casas = self.app.tabuleiro.casas[0:9]
+        self.t = self.app.tabuleiro
+        for i in range(5):
+            __ = [peca.escolhida() or casa.escolhida() for casa, peca in zip(casas,pecas)]
+            self.assertEquals(self.t.puzzle, 9)
+            [self.app.tabuleiro.temporiza() for t in range(10)]
+        self.assertEquals(self.t.puzzle, 9)
+        self.assertEquals(self.app.fase, 5, "fase nao mudou : %d"%self.app.fase)
+        [self.app.tabuleiro.temporiza() for t in range(100)]
+        self.assertEquals(self.app.casa.peca,None)
+        self.assertTrue('fim' in self.gui.json, "no end in %s"%self.gui.json)
+        self.assertEquals(self.t.bomba, 0)
+
+
+
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
