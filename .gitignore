@@ -19,6 +19,7 @@ lib
 lib64
 venv
 public
+studio
 
 # Installer logs
 pip-log.txt

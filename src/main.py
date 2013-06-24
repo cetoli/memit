@@ -33,6 +33,22 @@ def main():
         return "Error in Database %s"%doc_id
         pass
 
+@get('/<filename:re:.*\.html>')
+def html(filename):
+    return static_file(filename, root='src')
+
+@get('/<filename:re:.*\.js>')
+def javascript(filename):
+    return static_file(filename, root='libs')
+
+@get('/<filename:re:.*\.py>')
+def python(filename):
+    return static_file(filename, root='src')
+
+@get('/<filename:re:.*\.png>')
+def imagepng(filename):
+    return static_file(filename, root='studio/memit')
+
 @post('/record/head')
 def record_head():
     try:
