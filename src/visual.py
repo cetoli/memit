@@ -34,6 +34,11 @@ class Visual:
         self.doc = doc["panel"]
         #self.build_hand(gui)
     def build_hand(self):
+        def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
+            img = self.gui.image(href=href , x=x, y=y ,width=width,
+                            height=height, style = style)
+            doc <= img
+            return img
         def group(g, x, y, doc = self.doc):
             grp = self.gui.g(id = "h%d"%g, transform = "translate(%d %d)"%(x, y))
             doc <= grp
@@ -42,10 +47,15 @@ class Visual:
             (g % Z_COUNT) * Y_HANDS + Y_HAND0 + Y_HAND1 * (g // Z_COUNT)) for g in range(9)]
         self.badges = [image(REPO%'memit/piece0%d_0%d.png'%(1, b),0, 0,
             70, 70, hand ) for b, hand in enumerate(self.hands)]
-    def build_cube(self,gui,bottom_image, rear_image, side_image):
-        def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
+
+    def build_cube(self, bottom_image, rear_image, side_image, nouse = 0):
+        def image(href, x, y,width, height, doc = self.doc, style = {},
+                skewX = 0, skewY = 0, rotate= 0, scale = (1,1), self= self):
+            transforms = (rotate, skewX, skewY, scale[0], scale[1])
+            transforms = (skewX, skewY, rotate,  scale[0], scale[1])
             img = self.gui.image(href=href , x=x, y=y ,width=width,
-                            height=height, style = style)
+                height=height,
+                transform = 'skewX(%d) skewY(%d) rotate(%d) scale(%d %d)'%transforms)
             doc <= img
             return img
         OFF =123
@@ -53,13 +63,16 @@ class Visual:
         RDX = 30
         self.cube = self.gui.g(transform = "translate(550  150)")
         self.doc <= self.cube
-        bottom = gui.image(href=REPO%bottom_image,
-                    x=SIDE,y=-2*SIDE, width=SIDE,height=SIDE, rotate= 90)
-        rear = gui.image(href=REPO%rear_image,
-                    x=0,y=OFF, width=SIDE,height=SIDE, skewX=45, scale=(1,0.71))
-        left = gui.image(href=REPO%side_image,
-                    x=OFF,y=0, width=SIDE,height=SIDE, skewY=45, scale=(0.71,1))
+        bottom = self.gui.image(href=REPO%bottom_image,
+            x=SIDE,y=-2*SIDE, width=SIDE,height=SIDE, transform="rotate(90)")
+        rear = self.gui.image(href=REPO%rear_image,
+            x=0,y=OFF, width=SIDE,height=SIDE, transform = 'skewX(45) scale(1 0.71)')#skewX=45, scale=(1,0.71))
+        left = self.gui.image(href=REPO%side_image,
+                    x=OFF,y=0, width=SIDE,height=SIDE, transform = "skewY(45) scale(0.71 1)")
+        print ("in cube")
         self.parts = [bottom, rear, left]
+        [self.doc <= part for part in self.parts]
+
     def build_board(self):
         OFF =170
         SIDE = 99
@@ -106,10 +119,11 @@ class Visual:
             for i in range(4)]
         self.value =0
         self.inc =1
-        #time.set_interval(self.tick,100)
+        self.build_cube('memit/valor.png', 'memit/beleza.png','memit/conforto.png')
         self.voxels = [voxel(i, j, k, self.doc, CLS[i]) for i in Z2TW for j in Z2TW for k in Z2TW]
         self.time.set_interval(self._tick,100)
-        
+        print ("after cube")
+
     def _tick(self):
         """Time tick updates pump display value and makes the drops fall"""
         value = self.value //10
@@ -121,21 +135,9 @@ class Visual:
             self.digits[i].text = str(value % 10)
             value //= 10
         self.value += self.inc
-'''        
-    def tick(self):
-        """Time tick updates pump display value and makes the drops fall"""
-        value = self.value //10
-        for i, drop in enumerate(self.drops):
-            y = 50 + (i * 100 + (10 * self.value) % 100) % 500
-            drop.setAttribute('y' , y)
-        #print ('tick', value, value %10, value //10)
-        for i in range(4)[::-1]:
-            self.digits[i].text = str(value % 10)
-            value //= 10
-        self.value += self.inc
-    
-    
-    
+
+
+
 class GUI:
     """ Factory creating SVG elements, unpacking extra arguments. :ref:`gui`
     """
@@ -148,7 +150,7 @@ class GUI:
         self.data = data
         for child in panel: # iteration on child nodes
                 panel.remove(child)
-        
+
     def get_args(self):
         args = self.args
         for key, value in self.args.items():
@@ -166,7 +168,7 @@ class GUI:
             [key + ['(%s)','%s'][isinstance(value, tuple)]%str(value)
              for key, value in kw.items() if key in TRANS])
         return trans and ', transform="%s"'%trans or ''
-            
+
     def request(self, url = '/rest/studio/jeppeto?type=2', action = None, data=''):
         req = ajax()
         req.on_complete = action
@@ -194,7 +196,7 @@ class GUI:
         #d_rect=gui.rect(10,100, 540, 240, style= {'fill-opacity':'0.2', 'fill':'black'})
         self.data <= t
         return t
-    
+
     def dialog(self, text, img = REPO%'paje.png', act = lambda x:None):
         t = Dialog(self,text=text, img=img, act=act)
         #t.setStyleAttribute('border',0)
@@ -217,7 +219,7 @@ class GUI:
       style=style)
       self.panel <= element
       return element
-  
+
     def group(self, group= None, layer=0):
         element = group or SVG.g()
         self.panel <= element
@@ -229,30 +231,30 @@ class GUI:
             str(d),str(style),self.get_args()))
         self.panel <= element
         return element
-  
+
     def image(self,  href, x=0, y=0, width=100, height=50, **kw):
         exec('element = SVG.image(href="%s", x=%i, y=%i, width=%i, height=%i%s)'%(
             href, x, y, width, height,self._get_kwargs(kw)))
         self.panel <= element
         return element
-  
+
     def ellipse(self,  href, cx=0, cy=0, rx=100, ry=50, style= {}, **kw):
         exec('element = SVG.ellipse(cx=%i, cy=%i, rx=%i, ry=%i,style=%s%s)'%(
             cx, cy, rx, ry,str(style),self.get_args()))
         self.panel <= element
         return element
-  
+
     def rect(self, x=0, y=0, width=100, height=50,style={}):
         exec('element = SVG.rect(x=%i, y=%i, width=%i, height=%i,style=%s%s)'%(
             x, y, width, height,str(style),self.get_args()))
         self.panel <= element
         return element
-    
+
     def handler(self, key, handle):
         VKHANDLER[key] = handle
     def avatar(self):
         return Avatar(self)
-    
+
     def _decorate(self, handler, **kw):
       self.args = {} #kw #dict(kw)
       #alert(' '.join([k for k,v in kw.items()]))
@@ -270,7 +272,8 @@ class GUI:
     def over(self,handler):
       self._decorate(handler, onMouseOver=handler)
       return
-    
+'''
+
 class Marker:
     """ Colored shadow on the walls helping the user to deploy a piece in 3D.  :ref:`marker`
     """
@@ -287,7 +290,7 @@ class Marker:
         self.hide()
     def show(self, x, y):
         self.avatar.setAttribute("visibility",'hidden')
-        self.avatar.setAttribute('cx', x) 
+        self.avatar.setAttribute('cx', x)
         self.avatar.setAttribute('cy', y)
         self.avatar.setAttribute("visibility",'visible')
     def hide(self):
@@ -325,7 +328,7 @@ class Piece(Marker):
         #self.hide()
     def show(self, x, y):
         self.avatar.setAttribute("visibility",'hidden')
-        self.avatar.setAttribute('x', x) 
+        self.avatar.setAttribute('x', x)
         self.avatar.setAttribute('y', y)
         self.avatar.setAttribute("visibility",'visible')
     def do_markers(self, *a):
@@ -417,7 +420,7 @@ class House:
         self.red.hide()
         self.green.hide()
         self.blue.hide()
-   
+
 class Cube:
     """ A 3D game memetic space represented in a cavalier projection. :ref:`cube`
     """
@@ -475,7 +478,7 @@ class Form:
     def _submmit(self,ev):
         self.form.setAttribute("visibility",'hidden')
         logger('submmit')
-   
+
 class Phase:
     """ A game stage with a particular scenario and pieces. :ref:`phase`
     """
@@ -497,20 +500,20 @@ class Phase:
             k = i%2
             l = i//2
             return [i+j*3, 10 + 610 * k,150 +  210* k +210* l + 70*j]
-        
+
         P_PLC = [ij(i,j) for j in Z2TW for i in TW2Z]
         #: Original placement of pieces at phase startup.
         self.piece_places = P_PLC
         #: Set of pieces to play in this phase.
         self.pieces = pieces
-        
-        
-            
+
+
+
 
     def next_jig(self):
         """Remove the next piece from the puzzle. """
         print(self.back, self.current_jig, self.current_jig +1)
-        
+
         if self.current_jig >= 0:
             self.back[self.current_jig].setAttribute("visibility",'hidden')
         self.current_jig += 1
@@ -528,7 +531,7 @@ class Phase:
     def show(self):
         self.group.setAttribute('visibility','visible')
         [self.pieces[fid].show(x, y) for fid, x, y in self.piece_places]
-        
+
 class Board:
     """ A meme game board with a 3D cube, some pieces, score and puzzle. :ref:`board`
     """
@@ -561,7 +564,7 @@ class Board:
         self.red = Marker(gui, 300,300,'red',(0,1,1))
         self.green = Marker(gui, 300,300,'green',(1,0,1))
         self.blue = Marker(gui, 300,300,'blue',(1,1,0))
-        
+
     def place(self, *a):
         """Placement state method. Assumes _place (active) or _busy states"""
         pass
@@ -588,7 +591,7 @@ class Board:
             self.inc = 0
             self.value = 0
             __ = [drop.setAttribute('visibility', 'hidden') for drop in self.drops]
-            
+
             time.clear_interval()
             #time.set_interval(self.tick,3000)
 
@@ -654,7 +657,7 @@ class Board:
             piece = Piece(gui, x, y, self.piece_imgs[kind][fid], r, g, b, self, fid)
             piece.hide()
             return piece
-        
+
         pc = self.pieces = [
             [create_hidden(fid, x, y , kind)
             for fid, y, x in piece_places] for kind in KINDS]
@@ -686,7 +689,7 @@ class Board:
         self.value =0
         self.inc =1
         time.set_interval(self.tick,100)
-        
+
     def tick(self):
         """Time tick updates pump display value and makes the drops fall"""
         value = self.value //10
@@ -698,7 +701,7 @@ class Board:
             self.digits[i].text = str(value % 10)
             value //= 10
         self.value += self.inc
-      
+
 def main(dc,pn, gui, repo):
     """ Starting point """
     logger('Starting point')
