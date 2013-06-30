@@ -119,7 +119,8 @@ class House:
 
     def relocate(self, house = None):
         "a peca escolhida move para a casa da base"
-        house and house.enter(self)
+        #house and house.enter(self)
+        house.piece = self
         pass
 
     def _relay(self, house):
@@ -127,8 +128,8 @@ class House:
         def _chosen(x=0):
             self._got_chosen = self._chosen
         self.relay = lambda x: None
-        house.relay(self)
-        house.receive(self.piece)
+        #house.relay(self)
+        house.receive(self.piece, self)
         #self.piece = self
         self._got_chosen = _chosen
         print("relay piece: %s piece house :%s"%(
@@ -140,10 +141,10 @@ class House:
         self._enter(piece)
         piece.house = self
         
-    def receive(self, piece):
+    def receive(self, piece, house):
         "a peca escolhida move para a casa da base"
         #self.gui.send(str(dict(pec=self.name)))
-        self.piece.relocate()
+        self.piece.relocate(house)
         self._enter(piece)
         
     def _enter(self, piece):
