@@ -40,8 +40,11 @@ class Visual:
             return grp
         self.hands = [group(g, (g // Z_COUNT) * X_HANDS + X_HAND0,
             (g % Z_COUNT) * Y_HANDS + Y_HAND0 + Y_HAND1 * (g // Z_COUNT)) for g in range(9)]
+        return self.hands
+    def build_pieces(self):
         self.badges = [image(REPO%'memit/piece0%d_0%d.png'%(1, b),0, 0,
             70, 70, hand ) for b, hand in enumerate(self.hands)]
+        return self.badges
     def build_cube(self,gui,bottom_image, rear_image, side_image):
         def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
             img = self.gui.image(href=href , x=x, y=y ,width=width,
@@ -76,12 +79,12 @@ class Visual:
             return tex
         def voxel( i, j ,k , doc = self.doc, fill = "red"):
             x, y = OFF+k*100+71*i,  OFF+j*100+71*i
-            rec = self.gui.rect(x =x, y = y,
+            rec = self.gui.rect(x =0, y = 0,
             width=SIDE-(2-i)*RDX, height=SIDE-(2-i)*RDX,
             style=dict(fill=fill, fillOpacity= 0.2))
             vox = self.gui.g( transform = "translate(%d %d)"%(x, y))
             doc <= vox
-            self.doc <= rec
+            vox <= rec
             return vox
         gui= self.gui
         CLS='red green blue'.split()
@@ -107,8 +110,13 @@ class Visual:
         self.value =0
         self.inc =1
         #time.set_interval(self.tick,100)
-        self.voxels = [voxel(i, j, k, self.doc, CLS[i]) for i in Z2TW for j in Z2TW for k in Z2TW]
         self.time.set_interval(self._tick,100)
+        return [voxel(i, j, k, self.doc, CLS[i]) 
+                       for i in TW2Z for j in Z2TW for k in Z2TW]
+    def build_house(self):
+        house = self.gui.g(transform = "translate(10  10)")
+        self.doc <= house
+        return house
         
     def _tick(self):
         """Time tick updates pump display value and makes the drops fall"""
@@ -122,19 +130,6 @@ class Visual:
             value //= 10
         self.value += self.inc
 '''        
-    def tick(self):
-        """Time tick updates pump display value and makes the drops fall"""
-        value = self.value //10
-        for i, drop in enumerate(self.drops):
-            y = 50 + (i * 100 + (10 * self.value) % 100) % 500
-            drop.setAttribute('y' , y)
-        #print ('tick', value, value %10, value //10)
-        for i in range(4)[::-1]:
-            self.digits[i].text = str(value % 10)
-            value //= 10
-        self.value += self.inc
-    
-    
     
 class GUI:
     """ Factory creating SVG elements, unpacking extra arguments. :ref:`gui`
