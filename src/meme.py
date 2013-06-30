@@ -80,15 +80,20 @@ class Piece:
     def chosen(self, *ev):
         "a peca escolhida move para a casa da base"
         #self.gui.send(str(dict(pec=self.name)))
-        print('peca ',self.name)
-        self.board.receive(self)
-        #self.house.leave()
+        print('peca ',self.name, self.house.name)
+        self.house.relay(self.board)
+
     def relocate(self, house = None):
         "esta peca se move para a casa referida"
         #self.gui.send(str(dict(pec=self.name)))
-        #(house or self.house.house) <= self.piece
-        #self.house.leave()
         (house or self.house).enter(self)
+
+    def rehouse(self, house = None):
+        "esta peca se move para a casa referida"
+        self.house = house
+    def cling(self, house):
+        "esta peca se move para a casa referida"
+        house <= self.piece
 
 
 class House:
@@ -100,12 +105,13 @@ class House:
         self.house.onclick = self.chosen
         self._got_chosen = self._chosen
         self.relay = lambda x: None
-        
+        self.cling = lambda x=0: None        
     def _chosen(self):
         "a peca escolhida move para a casa da base"
         #self.gui.send(str(dict(cas=self.name)))
         print("_chosen:",self.name, self.house)
         self.board.relay(self)
+        self.piece.rehouse(self)
 
     def chosen(self, *ev):
         "a peca escolhida move para a casa da base"
@@ -113,38 +119,40 @@ class House:
 
     def relocate(self, house = None):
         "a peca escolhida move para a casa da base"
+        house and house.enter(self)
         pass
 
     def _relay(self, house):
         "a peca escolhida move para a casa referida"
+        def _chosen(x=0):
+            self._got_chosen = self._chosen
         self.relay = lambda x: None
-        house.enter(self.piece)
-        self.piece = self
-
-    def leave(self):
-        "a peca escolhida move para a casa referida"
-        self._got_chosen = self._chosen
-        self.piece = self
-        print("leave:",self._got_chosen, self.piece.name)
+        house.relay(self)
+        house.receive(self.piece)
+        #self.piece = self
+        self._got_chosen = _chosen
+        print("relay piece: %s piece house :%s"%(
+                    self.piece.name,self.piece.house.name))
        
     def enter(self, piece):
         "a peca escolhida move para esta casa"
         #self.gui.send(str(dict(pec=self.name)))
-        self._got_chosen = lambda : None
         self._enter(piece)
         piece.house = self
+        
     def receive(self, piece):
         "a peca escolhida move para a casa da base"
         #self.gui.send(str(dict(pec=self.name)))
-        self.relay = self._relay
         self.piece.relocate()
         self._enter(piece)
+        
     def _enter(self, piece):
         "a peca escolhida move fisicamente para ca e deiaxa a casa original"
         #self.gui.send(str(dict(pec=self.name)))
-        #piece.house.leave()
+        self._got_chosen = lambda : None
+        self.relay = self._relay
         self.piece = piece
-        self.house <= piece.piece
+        piece.cling(self.house)
         
         
 def main(doc, svg, time):
