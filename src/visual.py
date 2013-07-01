@@ -32,6 +32,7 @@ class Visual:
     def __init__(self,doc, gui, time):
         self.gui, self.time = gui, time
         self.doc = doc["panel"]
+        self.phaser = lambda x = 0: None
         #self.build_hand(gui)
     def build_hand(self):
         def group(g, x, y, doc = self.doc):
@@ -63,7 +64,7 @@ class Visual:
         left = gui.image(href=REPO%side_image,
                     x=OFF,y=0, width=SIDE,height=SIDE, skewY=45, scale=(0.71,1))
         self.parts = [bottom, rear, left]
-    def build_board(self):
+    def build_base(self):
         OFF =170
         SIDE = 99
         RDX = 30
@@ -87,8 +88,6 @@ class Visual:
             vox <= rec
             return vox
         gui= self.gui
-        CLS='red green blue'.split()
-        Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
         KINDS = [0,1]#[0]*2+[1]*5
         self.back = self.gui.g()
         self.avatar = image(href=REPO%'memit/background_base.png', x= 0, y = 0,
@@ -97,6 +96,7 @@ class Visual:
             width=400, height=112, style=dict(opacity= 1))
         self.drops = [image(REPO%'memit/gota.png',750, 50 + 100*i,
             40, 52) for i in range(6)]
+        self.bpuzzle = self.gui.g(transform = "translate(550  150)")
         puzzle = image(href=REPO%'memit/puzzle00_00.png', x= 550, y = 150,
             width=200, height=100 )
         self.puzzle = self.gui.g(transform = "translate(550  150)")
@@ -111,6 +111,12 @@ class Visual:
         self.inc =1
         #time.set_interval(self.tick,100)
         self.time.set_interval(self._tick,100)
+        return self.bpuzzle, self.puzzles, self.puzzle
+    def set_inc_value(self,value, inc=1):
+        self.value, self.inc = value, inc
+    def build_board(self):
+        CLS='red green blue'.split()
+        Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
         return [voxel(i, j, k, self.doc, CLS[i]) 
                        for i in TW2Z for j in Z2TW for k in Z2TW]
     def build_house(self):
@@ -122,13 +128,15 @@ class Visual:
         """Time tick updates pump display value and makes the drops fall"""
         value = self.value //10
         for i, drop in enumerate(self.drops):
-            y = 50 + (i * 100 + (10 * self.value) % 100) % 500
+            y = 50 + (i * (-800 + 900* self.inc) + (10 * self.value) % 100) % 500
             drop.setAttribute('y' , y)
         #print ('tick', value, value %10, value //10)
         for i in range(4)[::-1]:
             self.digits[i].text = str(value % 10)
             value //= 10
         self.value += self.inc
+        if self.value > 10:
+            self.phaser(self.value)
 '''        
     
 class GUI:
