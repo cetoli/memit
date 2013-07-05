@@ -43,13 +43,46 @@ class Visual:
             (g % Z_COUNT) * Y_HANDS + Y_HAND0 + Y_HAND1 * (g // Z_COUNT)) for g in range(9)]
         return self.hands
     def build_pieces(self):
-        self.badges = [image(REPO%'memit/piece0%d_0%d.png'%(1, b),0, 0,
-            70, 70, hand ) for b, hand in enumerate(self.hands)]
-        return self.badges
-    def build_cube(self,gui,bottom_image, rear_image, side_image):
         def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
             img = self.gui.image(href=href , x=x, y=y ,width=width,
                             height=height, style = style)
+            doc <= img
+            return img
+        self.badges = [image(REPO%'memit/piece0%d_0%d.png'%(1, b),0, 0,
+            70, 70, hand ) for b, hand in enumerate(self.hands)]
+        return self.badges
+    def build_markers(self):
+        self.marker_layer = self.gui.g()
+        self.doc <= self.marker_layer
+        self.red = self.build_marker(300,300,'red',(0,1,1))
+        self.green = self.build_marker(300,300,'green',(1,0,1))
+        self.blue = self.build_marker(300,300,'blue',(1,1,0))
+
+    def build_marker(self, x, y, fill, face):
+        Z2T = [0, 1, 2]
+        k, j, i = face
+        TRIM = 35
+        OA, OB, OC = 345 - TRIM, 172- TRIM, 125- TRIM
+        #skew
+        OFFX, OFFY = (k * j * OA + k * i * OB + j * i * OC ,
+                     k * j * OA+ k * i * OC  + j * i * OB)
+        def elps(l,m,n):
+            x, y, z = k * l, j * m, i * n
+            ax = OFFX+x*100+71*z
+            ay = OFFY+y*100+71*z
+            mark =  self.gui.ellipse(cx= ax+35, cy = ay+35, rx=35, ry=35,
+                 style=dict(fill=fill, fillOpacity= 0.5))
+            self.marker_layer <= mark
+        marker = {(l,m,n):elps(l,m,n) for l in Z2T for m in Z2T for n in Z2T}
+    '''
+    '''
+
+    def build_cube(self,gui,bottom_image, rear_image, side_image):
+        def image(href, x, y,width, height, doc = self.doc
+                  , skewX=0, skewY=0, rotate=0, scale = (1,1), self= self):
+            img = self.gui.image(href=href , x=x, y=y ,width=width,height=height, 
+                transform= "skewX(%d) skewY(%d) scale(%f %f) rotate(%d)"%(
+                    skewX, skewY, scale[0], scale[1], rotate))
             doc <= img
             return img
         OFF =123
@@ -57,17 +90,14 @@ class Visual:
         RDX = 30
         self.cube = self.gui.g(transform = "translate(550  150)")
         self.doc <= self.cube
-        bottom = gui.image(href=REPO%bottom_image,
+        bottom = image(href=REPO%bottom_image,
                     x=SIDE,y=-2*SIDE, width=SIDE,height=SIDE, rotate= 90)
-        rear = gui.image(href=REPO%rear_image,
+        rear = image(href=REPO%rear_image,
                     x=0,y=OFF, width=SIDE,height=SIDE, skewX=45, scale=(1,0.71))
-        left = gui.image(href=REPO%side_image,
+        left = image(href=REPO%side_image,
                     x=OFF,y=0, width=SIDE,height=SIDE, skewY=45, scale=(0.71,1))
         self.parts = [bottom, rear, left]
     def build_base(self):
-        OFF =170
-        SIDE = 99
-        RDX = 30
         def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
             img = self.gui.image(href=href , x=x, y=y ,width=width,
                             height=height, style = style)
@@ -78,15 +108,6 @@ class Visual:
                             text_anchor=text_anchor, style = style)
             self.doc <= tex
             return tex
-        def voxel( i, j ,k , doc = self.doc, fill = "red"):
-            x, y = OFF+k*100+71*i,  OFF+j*100+71*i
-            rec = self.gui.rect(x =0, y = 0,
-            width=SIDE-(2-i)*RDX, height=SIDE-(2-i)*RDX,
-            style=dict(fill=fill, fillOpacity= 0.2))
-            vox = self.gui.g( transform = "translate(%d %d)"%(x, y))
-            doc <= vox
-            vox <= rec
-            return vox
         gui= self.gui
         KINDS = [0,1]#[0]*2+[1]*5
         self.back = self.gui.g()
@@ -111,19 +132,32 @@ class Visual:
         self.inc =1
         #time.set_interval(self.tick,100)
         self.time.set_interval(self._tick,100)
+        #self._build_markers()
         return self.bpuzzle, self.puzzles, self.puzzle
     def set_inc_value(self,value, inc=1):
         self.value, self.inc = value, inc
     def build_board(self):
+        OFF =170 -35
+        SIDE = 99
+        RDX = 30
+        def voxel( i, j ,k , doc = self.doc, fill = "red"):
+            x, y = OFF+k*100+71*i,  OFF+j*100+71*i
+            rec = self.gui.rect(x =0, y = 0,
+            width=SIDE-(2-i)*RDX, height=SIDE-(2-i)*RDX,
+            style=dict(fill=fill, fillOpacity= 0.2))
+            vox = self.gui.g( transform = "translate(%d %d)"%(x, y))
+            doc <= vox
+            vox <= rec
+            return vox
         CLS='red green blue'.split()
         Z2TW, TW2Z = [0, 1, 2], [2, 1, 0]
-        return [voxel(i, j, k, self.doc, CLS[i]) 
+        return [voxel(i, j, k, self.doc, CLS[i])
                        for i in TW2Z for j in Z2TW for k in Z2TW]
     def build_house(self):
         house = self.gui.g(transform = "translate(10  10)")
         self.doc <= house
         return house
-        
+
     def _tick(self):
         """Time tick updates pump display value and makes the drops fall"""
         value = self.value //10

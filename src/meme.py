@@ -11,10 +11,8 @@ Memit - Principal
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 """
-#from tabuleiro import Tabuleiro gui.build_hand()House
-#from mao import Mao
-#from casa import Casa
 from visual import Visual
+
 
 class Meme:
     """Game base with board and pieces."""
@@ -23,18 +21,20 @@ class Meme:
         self.gui = gui
         #self.casa = Casa(gui,self,99)
         self.fase = 0
-        
+
     def build_base(self,gui):
         """Constroi as partes do Jogo. """
         self.doc, self.puzzles, self.puzzle = gui.build_base()
         self.jig = 0
+        cube = gui.build_cube(None,'memit/beleza.png', 'memit/conforto.png','memit/valor.png')
+        markers = gui.build_markers()
         board = gui.build_board()
         hand = gui.build_hand()
         pieces = gui.build_pieces()
         sh = self.house = House(gui.build_house())
         self.board = [House(h, sh, n, self) for n, h in enumerate(board)]
         self.hand =  [House(h, sh, 100+n) for n, h in enumerate(hand)]
-        self.piece = [Piece(p, h, sh, n) 
+        self.piece = [Piece(p, h, sh, n)
                        for n, (p, h) in enumerate(zip(pieces, self.hand))]
         self.next_phase()
 
@@ -47,7 +47,7 @@ class Meme:
             self.puzzle <= self.puzzles[self.jig]
         else:
             self.gui.phaser = self.next_phase
-        
+
     def next_phase(self, v = 0):
         self.fase += 1
         self.gui.phaser = lambda x = 0: None
@@ -126,24 +126,25 @@ class House:
     def _relay(self, house):
         "a peca escolhida move para a casa referida"
         def _chosen(x=0):
+            """usado para impedir que o click da casa ative imediatamente"""
             self._got_chosen = self._chosen
         self.game.rehouse(-1)
         self.relay = lambda x: None
         house.receive(self.piece, self)
         self._got_chosen = _chosen
-       
+
     def enter(self, piece):
         "a peca escolhida move para esta casa"
         self._enter(piece)
         piece.house = self
-        
+
     def receive(self, piece, house):
         "a peca escolhida move para a casa da base"
         #self.gui.send(str(dict(cas=self.name, pec=piece.name)))
         print(str(dict(cas=self.name, pec=piece.name)))
         self.piece.relocate(house)
         self._enter(piece)
-        
+
     def _enter(self, piece):
         "a peca escolhida move fisicamente para ca e a casa fica ocupada"
         self.game.rehouse(+1)
@@ -151,8 +152,8 @@ class House:
         self.relay = self._relay
         self.piece = piece
         piece.cling(self.house)
-        
-        
+
+
 def main(doc, svg, time):
   print('Memit 0.1.0')
   gui = Visual(doc, svg, time)
