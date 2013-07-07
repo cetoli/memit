@@ -24,15 +24,17 @@ class Meme:
 
     def build_base(self,gui):
         """Constroi as partes do Jogo. """
-        self.doc, self.puzzles, self.puzzle = gui.build_base()
+        self.hideout, self.puzzles, self.puzzle = gui.build_base()
         self.jig = 0
-        cube = gui.build_cube(None,'memit/beleza.png', 'memit/conforto.png','memit/valor.png')
+        cube = gui.build_cube(None,'memit/beleza.png', 'memit/conforto.png',
+                              'memit/valor.png')
         markers = gui.build_markers()
         board = gui.build_board()
         hand = gui.build_hand()
         pieces = gui.build_pieces()
         sh = self.house = House(gui.build_house())
-        self.board = [House(h, sh, n, self) for n, h in enumerate(board)]
+        self.board = [MarkerHouse(h, sh, n, self, markers, self.hideout)
+                      for n, h in enumerate(board)]
         self.hand =  [House(h, sh, 100+n) for n, h in enumerate(hand)]
         self.piece = [Piece(p, h, sh, n)
                        for n, (p, h) in enumerate(zip(pieces, self.hand))]
@@ -40,7 +42,7 @@ class Meme:
 
     def rehouse(self, step):
         """Constroi o tabuleiro onde as pecas sao jogadas."""
-        self.doc <= self.puzzles[self.jig]
+        self.hideout <= self.puzzles[self.jig]
         self.gui.set_inc_value(0)
         if self.jig < 8 :
             self.jig += step
@@ -58,7 +60,7 @@ class Meme:
         if self.fase >= 3:
             #self.gui.send("end", fim = self.fase)
             self.gui.set_inc_value(0, 0)
-            [self.doc <= piece.piece for piece in self.piece]
+            [self.hideout <= piece.piece for piece in self.piece]
             print(dict(fim= self.fase))
             return
         [house.enter(piece) for house, piece in zip(self.hand, self.piece)]
@@ -152,6 +154,28 @@ class House:
         self.relay = self._relay
         self.piece = piece
         piece.cling(self.house)
+
+class MarkerHouse(House):
+    """Casa onde se coloca pecas, com marcadores"""
+    def __init__(self, visual_house, board = None, name = 99, game = None,
+                 visual_markers = None, hideout = None ):
+        "local onde nasce, o nome da peca"
+        self.house, self.board, self.name = visual_house, board or self, name
+        self.game = game or self
+        self.house.onclick = self.chosen
+        self.house.onmouseover = self.show
+        self.house.onmouseout = self.hide
+        self.init()
+        position = (name % 3, (name // 3) % 3, 2 - name // 9)
+        self.markers = [(marker[position], shadow)
+            for marker, shadow  in visual_markers]
+        self.hideout = hideout
+
+    def show(self, ev):
+        [marker <= shadow for marker, shadow in self.markers]
+
+    def hide(self, ev):
+        [self.hideout <= shadow for marker, shadow in self.markers]
 
 
 def main(doc, svg, time):

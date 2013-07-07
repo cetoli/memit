@@ -57,6 +57,7 @@ class Visual:
         self.red = self.build_marker(300,300,'red',(0,1,1))
         self.green = self.build_marker(300,300,'green',(1,0,1))
         self.blue = self.build_marker(300,300,'blue',(1,1,0))
+        return (self.red, self.green, self.blue)
 
     def build_marker(self, x, y, fill, face):
         Z2T = [0, 1, 2]
@@ -70,17 +71,23 @@ class Visual:
             x, y, z = k * l, j * m, i * n
             ax = OFFX+x*100+71*z
             ay = OFFY+y*100+71*z
-            mark =  self.gui.ellipse(cx= ax+35, cy = ay+35, rx=35, ry=35,
-                 style=dict(fill=fill, fillOpacity= 0.5))
+            mark =  self.gui.g(transform = "translate(%d %d)"%(ax+35, ay+35))
+            #mark_elp =  self.gui.ellipse(cx= 0, cy = 0, rx=35, ry=35,
+            #     style=dict(fill=fill, fillOpacity= 0.5))
             self.marker_layer <= mark
+            #mark <= mark_elp
+            return mark
+        mark_elp =  self.gui.ellipse(cx= 0, cy = 0, rx=35, ry=35,
+             style=dict(fill=fill, fillOpacity= 0.5))
         marker = {(l,m,n):elps(l,m,n) for l in Z2T for m in Z2T for n in Z2T}
+        return (marker, mark_elp)
     '''
     '''
 
     def build_cube(self,gui,bottom_image, rear_image, side_image):
         def image(href, x, y,width, height, doc = self.doc
                   , skewX=0, skewY=0, rotate=0, scale = (1,1), self= self):
-            img = self.gui.image(href=href , x=x, y=y ,width=width,height=height, 
+            img = self.gui.image(href=href , x=x, y=y ,width=width,height=height,
                 transform= "skewX(%d) skewY(%d) scale(%f %f) rotate(%d)"%(
                     skewX, skewY, scale[0], scale[1], rotate))
             doc <= img
