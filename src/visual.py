@@ -51,6 +51,7 @@ class Visual:
         self.badges = [image(REPO%'memit/piece0%d_0%d.png'%(1, b),0, 0,
             70, 70, hand ) for b, hand in enumerate(self.hands)]
         return self.badges
+
     def build_markers(self):
         self.marker_layer = self.gui.g()
         self.doc <= self.marker_layer
@@ -104,6 +105,7 @@ class Visual:
         left = image(href=REPO%side_image,
                     x=OFF,y=0, width=SIDE,height=SIDE, skewY=45, scale=(0.71,1))
         self.parts = [bottom, rear, left]
+
     def build_base(self):
         def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
             img = self.gui.image(href=href , x=x, y=y ,width=width,
@@ -141,8 +143,10 @@ class Visual:
         self.time.set_interval(self._tick,100)
         #self._build_markers()
         return self.bpuzzle, self.puzzles, self.puzzle
+
     def set_inc_value(self,value, inc=1):
         self.value, self.inc = value, inc
+        
     def build_board(self):
         OFF =170 -35
         SIDE = 99
