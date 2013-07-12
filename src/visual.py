@@ -86,7 +86,7 @@ class Visual:
     '''
 
     def build_cube(self,gui,bottom_image, rear_image, side_image):
-        def image(href, x, y,width, height, doc = self.doc
+        def image(href, x, y,width, height, doc = self.cube
                   , skewX=0, skewY=0, rotate=0, scale = (1,1), self= self):
             img = self.gui.image(href=href , x=x, y=y ,width=width,height=height,
                 transform= "skewX(%d) skewY(%d) scale(%f %f) rotate(%d)"%(
@@ -96,8 +96,6 @@ class Visual:
         OFF =123
         SIDE = 300
         RDX = 30
-        self.cube = self.gui.g(transform = "translate(550  150)")
-        self.doc <= self.cube
         bottom = image(href=REPO%bottom_image,
                     x=SIDE,y=-2*SIDE, width=SIDE,height=SIDE, rotate= 90)
         rear = image(href=REPO%rear_image,
@@ -105,6 +103,7 @@ class Visual:
         left = image(href=REPO%side_image,
                     x=OFF,y=0, width=SIDE,height=SIDE, skewY=45, scale=(0.71,1))
         self.parts = [bottom, rear, left]
+        return self.parts
 
     def build_base(self):
         def image(href, x, y,width, height, doc = self.doc, style = {}, self= self):
@@ -120,6 +119,8 @@ class Visual:
         gui= self.gui
         KINDS = [0,1]#[0]*2+[1]*5
         self.back = self.gui.g()
+        self.end = image(href=REPO%'memit/thank-you.jpg', x= 0, y = 0,
+            width=800, height=600, style=dict(opacity= 1))
         self.avatar = image(href=REPO%'memit/background_base.png', x= 0, y = 0,
             width=800, height=600, style=dict(opacity= 1))
         self.pump = image(href=REPO%'memit/bomba.png', x= 390, y = 5,
@@ -139,14 +140,16 @@ class Visual:
             for i in range(4)]
         self.value =0
         self.inc =1
+        self.cube = self.gui.g()#transform = "translate(550  150)")
+        self.doc <= self.cube
         #time.set_interval(self.tick,100)
         self.time.set_interval(self._tick,100)
         #self._build_markers()
-        return self.bpuzzle, self.puzzles, self.puzzle
+        return self.bpuzzle, self.puzzles, self.puzzle, self.end
 
     def set_inc_value(self,value, inc=1):
         self.value, self.inc = value, inc
-        
+
     def build_board(self):
         OFF =170 -35
         SIDE = 99

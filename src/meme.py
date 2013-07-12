@@ -13,6 +13,9 @@ Memit - Principal
 """
 from visual import Visual
 
+CUBE = """beleza conforto valor atendimento numerorevenda poderrevenda
+valordaspecas valormanutencao gasto economia esporte conforto""".split()
+FACE= ["memit/%s.png"%face for face in CUBE]
 
 class Meme:
     """Game base with board and pieces."""
@@ -24,10 +27,9 @@ class Meme:
 
     def build_base(self,gui):
         """Constroi as partes do Jogo. """
-        self.hideout, self.puzzles, self.puzzle = gui.build_base()
+        self.hideout, self.puzzles, self.puzzle, self.end = gui.build_base()
         self.jig = 0
-        cube = gui.build_cube(None,'memit/beleza.png', 'memit/conforto.png',
-                              'memit/valor.png')
+        self.cube = gui.build_cube(None,FACE[0],FACE[1],FACE[2])
         markers = gui.build_markers()
         board = gui.build_board()
         hand = gui.build_hand()
@@ -38,7 +40,7 @@ class Meme:
         self.hand =  [House(h, sh, 100+n) for n, h in enumerate(hand)]
         self.piece = [Piece(p, h, sh, n)
                        for n, (p, h) in enumerate(zip(pieces, self.hand))]
-        self.next_phase()
+        #self.next_phase()
 
     def rehouse(self, step):
         """Constroi o tabuleiro onde as pecas sao jogadas."""
@@ -57,12 +59,16 @@ class Meme:
 #        self.gui.send("phase", fas = self.fase,
 #                pcs = [peca.local.name for peca in self.pecas])
         print(dict(fas= self.fase, pcs=[peca.house.name for peca in self.piece]))
-        if self.fase >= 3:
+        if self.fase >= 4:
             #self.gui.send("end", fim = self.fase)
             self.gui.set_inc_value(0, 0)
             [self.hideout <= piece.piece for piece in self.piece]
             print(dict(fim= self.fase))
+            self.gui.doc <= self.end
             return
+        [self.hideout <= face for face in self.cube]
+        step = self.fase * 3
+        self.cube = self.gui.build_cube(None,FACE[0 + step],FACE[1 + step],FACE[2 + step])
         [house.enter(piece) for house, piece in zip(self.hand, self.piece)]
         [house.init() for house in self.board]
         self.jig = -1
