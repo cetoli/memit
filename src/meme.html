@@ -26,15 +26,15 @@ Memit - Serious Game in cavalier projection for memetics
         </script>
         <script type="text/python">
             import svg
-            import time
-            main(doc, svg, time)
+            #import time
+            main(doc, svg, ajax)
         </script>
     </head>
     <body onLoad="brython(1)">
         <div id="data">
             <div id="doc_id" class="hidden_display">{{ doc_id }}</div>
             <svg xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="800" height="600"
                 style="border-style:solid;border-width:1;border-color:#000;">
               <g id="panel">

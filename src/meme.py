@@ -184,9 +184,9 @@ class MarkerHouse(House):
         [self.hideout <= shadow for marker, shadow in self.markers]
 
 
-def main(doc, svg, time):
+def main(doc, svg, ajax):
   print('Memit 0.1.0')
-  gui = Visual(doc, svg, time)
+  gui = Visual(doc, svg, ajax)
   meme =  Meme(gui)
   meme.build_base(gui)
 

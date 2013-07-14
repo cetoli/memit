@@ -29,11 +29,26 @@ EVENT = ("onfocusin onfocusout onactivate onload onclick onkeydown onkeyup" + \
 class Visual:
     """ Builder creating SVG elements and placeholder groups. :ref:`visual`
     """
-    def __init__(self,doc, gui, time):
-        self.gui, self.time = gui, time
+    def __init__(self,doc, gui, ajax):
+        self.gui, self.ajax = gui, ajax
         self.doc = doc["panel"]
         self.phaser = lambda x = 0: None
         #self.build_hand(gui)
+    def _on_sent(self, req):
+        if req.status==200 or req.status==0:
+            doc["result"].html = req.text
+        else:
+            doc["result"].html = "error "+req.text
+
+            pass
+    def send(self, ):
+        req = ajax()
+        req.on_complete = on_complete
+        req.set_timeout(timeout,err_msg)
+        req.open('POST',url,True)
+        req.set_header('content-type','application/x-www-form-urlencoded')
+        req.send(data)
+
     def build_hand(self):
         def group(g, x, y, doc = self.doc):
             grp = self.gui.g(id = "h%d"%g, transform = "translate(%d %d)"%(x, y))
