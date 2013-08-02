@@ -13,6 +13,9 @@ Memit - Visual
 
 Serious Game in cavalier projection for memetics.
 """
+
+import time
+
 REPO = "/studio/%s"
 Z_COUNT = 6
 X_HAND0 = 10
@@ -41,7 +44,7 @@ class Visual:
             doc["result"].html = "error "+req.text
 
             pass
-    def send(self, ):
+    def send(self, data):
         req = ajax()
         req.on_complete = on_complete
         req.set_timeout(timeout,err_msg)
@@ -158,7 +161,7 @@ class Visual:
         self.cube = self.gui.g()#transform = "translate(550  150)")
         self.doc <= self.cube
         #time.set_interval(self.tick,100)
-        self.time.set_interval(self._tick,100)
+        time.set_interval(self._tick,100)
         #self._build_markers()
         return self.bpuzzle, self.puzzles, self.puzzle, self.end
 
