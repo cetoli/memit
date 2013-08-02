@@ -28,11 +28,11 @@ class TestTime_Web(unittest.TestCase):
 
     def setUp(self):
         class _Record(dict):
-        
+
             def save(self, arg):
                 self['adm1n'].update(arg)
                 return 'adm1n', 0001
-            
+
         database.DRECORD = _Record(DRECORD)
         self.app = TestApp(app)
         pass
@@ -44,6 +44,20 @@ class TestTime_Web(unittest.TestCase):
         assert 'date'in db, 'no time in %s'%db
         assert result.status == '200 OK'
         assert '<div id="doc_id">adm1n</div>' in result , 'no admin in %s'%result.body
+        pass
+
+    def test_lib(self):
+        "retorna a biblioteca brython."
+        result = self.app.get('/brython.js')
+        assert result.status == '200 OK'
+        assert 'brython.js www.brython.info' in result , 'no brython in %s'%result.body[:200]
+        pass
+
+    def test_meme_py(self):
+        "retorna o arquivo meme.py."
+        result = self.app.get('/meme.py')
+        assert result.status == '200 OK'
+        assert 'Memit - Principal' in result , 'no brython in %s'%result.body[:200]
         pass
 
     def test_post_register(self):

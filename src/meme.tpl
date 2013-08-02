@@ -18,19 +18,24 @@ Memit - Serious Game in cavalier projection for memetics
         <title>ActivUFRJ: Car Badges</title>
         <meta http-equiv="content-type" content="application/xml;charset=utf-8" />
         <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-        <script type="text/javascript" src="/file/activlets/brython.js"></script>
-        <script type="text/python" src="/file/memit/meme.py">
+        <style>
+        .hidden_display { display :none;}
+        </style>
+        <!--script type="text/javascript" src="../libs/lib/brython.js"></script-->
+        <script type="text/javascript" src="brython.js"></script>
+        <script type="text/python" src="meme.py">
         </script>
         <script type="text/python">
             import svg
-            main(GUI(doc, svg))
+            #import time
+            main(doc, svg, ajax)
         </script>
     </head>
     <body onLoad="brython(1)">
         <div id="data">
-            <div id="doc_id">{{ doc_id }}</div>
+            <div id="doc_id" class="hidden_display">{{ doc_id }}</div>
             <svg xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="800" height="600"
                 style="border-style:solid;border-width:1;border-color:#000;">
               <g id="panel">

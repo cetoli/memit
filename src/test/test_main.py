@@ -16,7 +16,7 @@ Memit - Teste
 import unittest
 from meme import Meme
 from visual import Visual
-import peca
+#import peca
 
 class _estMeme(unittest.TestCase):
 

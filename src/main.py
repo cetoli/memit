@@ -22,6 +22,9 @@ import database
 DIR = os.path.dirname(__file__)+'/'
 ADM, HEA, PEC, PHA, END = 'adm1n head peca fase fim'.split()
 
+LIBS = DIR + '../libs/lib'
+IMGS = DIR + 'studio/memit'
+
 @route('/')
 @view(DIR+'meme')
 def main():
@@ -35,19 +38,20 @@ def main():
 
 @get('/<filename:re:.*\.html>')
 def html(filename):
-    return static_file(filename, root='src')
+    return static_file(filename, root = DIR)
 
 @get('/<filename:re:.*\.js>')
 def javascript(filename):
-    return static_file(filename, root='libs')
+    print(filename, '../libs/lib')
+    return static_file(filename, root = LIBS)
 
 @get('/<filename:re:.*\.py>')
 def python(filename):
-    return static_file(filename, root='src')
+    return static_file(filename, root = DIR)
 
 @get('/<filename:re:.*\.png>')
 def imagepng(filename):
-    return static_file(filename, root='studio/memit')
+    return static_file(filename, root = DIR)
 
 @post('/record/head')
 def record_head():
