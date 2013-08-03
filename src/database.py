@@ -39,7 +39,7 @@ class Activ(Server):
 
 
 try:
-    __ACTIV = Activ()
+    __ACTIV = Activ('https://cloudant.com')
     DRECORD = __ACTIV.keystore
 except Exception:
     DRECORD = None
