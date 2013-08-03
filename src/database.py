@@ -16,13 +16,15 @@ Time-Web - Main
 """
 from couchdb import Server
 
-_DOCBASES = ['app16304533.heroku/keystore	']
+URL ='https://app16304533.heroku:jcwpDKuQWnXmrooAlgBXWnPl@app16304533.heroku.cloudant.com'
+
+_DOCBASES = ['app16304533.heroku/keystore']
 
 class Activ(Server):
     "Active database"
     keystore = {}
 
-    def __init__(self, url=None):
+    def __init__(self, url=URL):
         Server.__init__(self)
         act = self
         test_and_create = lambda doc: doc in act and act[doc] or act.create(doc)
@@ -38,10 +40,10 @@ class Activ(Server):
                 pass
 
 
-try:
-    __ACTIV = Activ('https://cloudant.com')
+if True: #try:
+    __ACTIV = Activ()
     DRECORD = __ACTIV.keystore
-except Exception:
+    #except Exception:
     DRECORD = None
 
 if __name__ == "__main__":
