@@ -19,6 +19,7 @@ import bottle
 import os
 from couchdb import Server
 import database
+import json
 DIR = os.path.dirname(__file__)+'/'
 ADM, HEA, PEC, PHA, END = 'adm1n head peca fase fim'.split()
 
@@ -49,56 +50,68 @@ def javascript(filename):
 def python(filename):
     return static_file(filename, root = DIR)
 
-@get('/<filename:re:.*\.png>')
+@get('/<filename:re:.*\.(jpg|png|gif|ico)>')
 def imagepng(filename):
     return static_file(filename, root = DIR)
 
+def retrieve_data(req):
+    jdata = req['data']
+    print (jdata)
+    return json.loads(jdata)
+
+
 @post('/record/head')
 def record_head():
+    json = retrieve_data(request.params)
     try:
-        json = request.json
         record_id = json.keys()[0]
+        print(json[record_id],record_id)
         record = database.DRECORD[record_id]
-        record[record_id][HEA]=json[record_id]
-        record[record_id][PEC]=[]
-        record[record_id][PHA]=[]
+        print('record:',record)
+        record[HEA]=json[record_id]
+        record[PEC]=[]
+        record[PHA]=[]
+        database.DRECORD[record_id] = record
         return record
     except Exception:
-        return "Cabeçalho não foi gravado %s"%request.json
+        return "Cabeçalho não foi gravado %s"%str(request.params.values())#str([p for p in request.params])
 
 @post('/record/piece')
 def record_piece():
     try:
-        json = request.json
+        json = retrieve_data(request.params)
         record_id = json.keys()[0]
         record = database.DRECORD[record_id]
-        record[record_id][PEC] +=[json[record_id]]
+        record[PEC] +=[json[record_id]]
+        database.DRECORD[record_id] = record
         return record
     except Exception:
-        return "Movimento de peça não foi gravado %s"%request.json
+        return "Movimento de peça não foi gravado %s"%str(request.params.values())
 
 
 @post('/record/phase')
 def record_phase():
     try:
-        json = request.json
+        json = retrieve_data(request.params)
         record_id = json.keys()[0]
         record = database.DRECORD[record_id]
-        record[record_id][PHA] +=[json[record_id]]
+        record[PHA] +=[json[record_id]]
+        database.DRECORD[record_id] = record
         return record
     except Exception:
-        return "Movimento de peça não foi gravado %s"%request.json
+        return "Fase dd jogo não foi gravado %s"%str(request.params.values())
 
 @post('/record/end')
 def record_end():
     try:
-        json = request.json
+        json = retrieve_data(request.params)
         record_id = json.keys()[0]
         record = database.DRECORD[record_id]
-        record[record_id][END] =json[record_id]
+        record[END] =json[record_id]
+        database.DRECORD[record_id] = record
         return record
     except Exception:
-        return "Fim de jogo não foi gravado %s"%request.json
+        return "Fim de jogo não foi gravado %s"%str(request.params.values())
 
 
 if __name__ == "__main__":

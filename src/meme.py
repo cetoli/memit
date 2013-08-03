@@ -40,6 +40,7 @@ class Meme:
         self.hand =  [House(h, sh, 100+n) for n, h in enumerate(hand)]
         self.piece = [Piece(p, h, sh, n)
                        for n, (p, h) in enumerate(zip(pieces, self.hand))]
+        self.gui.send("head", start = 1)
         #self.next_phase()
 
     def rehouse(self, step):
@@ -56,11 +57,11 @@ class Meme:
         self.fase += 1
         self.gui.phaser = lambda x = 0: None
         self.gui.set_inc_value(0, 1)
-#        self.gui.send("phase", fas = self.fase,
-#                pcs = [peca.local.name for peca in self.pecas])
+        self.gui.send("phase", fas = self.fase,
+                pcs = [peca.house.name for peca in self.piece])
         print(dict(fas= self.fase, pcs=[peca.house.name for peca in self.piece]))
         if self.fase >= 4:
-            #self.gui.send("end", fim = self.fase)
+            self.gui.send("end", fim = self.fase)
             self.gui.set_inc_value(0, 0)
             [self.hideout <= piece.piece for piece in self.piece]
             print(dict(fim= self.fase))

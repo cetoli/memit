@@ -15,7 +15,7 @@ Serious Game in cavalier projection for memetics.
 """
 
 import time
-
+RAPP = '/record/%s'
 REPO = "/studio/%s"
 Z_COUNT = 6
 X_HAND0 = 10
@@ -35,6 +35,7 @@ class Visual:
     def __init__(self,doc, gui, ajax):
         self.gui, self.ajax = gui, ajax
         self.doc = doc["panel"]
+        self.doc_id = doc["doc_id"].text
         self.phaser = lambda x = 0: None
         #self.build_hand(gui)
     def _on_sent(self, req):
@@ -44,13 +45,23 @@ class Visual:
             doc["result"].html = "error "+req.text
 
             pass
-    def send(self, data):
+    def send(self, url, **kwargs):
+        def on_complete(req):
+            if req.status==200 or req.status==0:
+                print(req.text)
+            else:
+                print("error "+req.text)
+
+
+        data =str({self.doc_id : kwargs}).replace("'", '"')
+        print(data)
         req = ajax()
         req.on_complete = on_complete
-        req.set_timeout(timeout,err_msg)
-        req.open('POST',url,True)
+        #req.set_timeout(timeout,err_msg)
+        req.open('POST',RAPP%url,True)
         req.set_header('content-type','application/x-www-form-urlencoded')
-        req.send(data)
+        #req.set_header('content-type','application/json')
+        req.send(dict(data = data))
 
     def build_hand(self):
         def group(g, x, y, doc = self.doc):
