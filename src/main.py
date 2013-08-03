@@ -34,7 +34,7 @@ def main():
 
         return dict(doc_id = doc_id)
     except Exception:
-        return "Error in Database %s"%doc_id
+        return "Error in Database %s"%str([r for r in database.DRECORD])
         pass
 
 @get('/<filename:re:.*\.html>')

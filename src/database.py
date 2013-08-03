@@ -16,7 +16,7 @@ Time-Web - Main
 """
 from couchdb import Server
 
-_DOCBASES = ['keystore']
+_DOCBASES = ['app16304533.heroku/keystore	']
 
 class Activ(Server):
     "Active database"
