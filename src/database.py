@@ -18,7 +18,7 @@ from couchdb import Server
 
 URL ='https://app16304533.heroku:jcwpDKuQWnXmrooAlgBXWnPl@app16304533.heroku.cloudant.com'
 
-_DOCBASES = ['app16304533.heroku/keystore']
+_DOCBASES = ['keystore']
 
 class Activ(Server):
     "Active database"
@@ -42,6 +42,7 @@ class Activ(Server):
 
 if True: #try:
     __ACTIV = Activ()
+    print([x for x in __ACTIV])
     DRECORD = __ACTIV.keystore
     #except Exception:
     DRECORD = None
