@@ -1,0 +1,973 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="803"
+   height="603"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="memit.svg">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4029851"
+     inkscape:cx="401.5"
+     inkscape:cy="215.96809"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1295"
+     inkscape:window-height="957"
+     inkscape:window-x="594"
+     inkscape:window-y="39"
+     inkscape:window-maximized="0"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       orientation="0.69324586,0.72070117"
+       position="-103.35106,429.79787"
+       id="guide3304" />
+  </sodipodi:namedview>
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="back"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(30.071421,-265.14789)"
+     sodipodi:insensitive="true">
+    <image
+       y="265.14789"
+       x="-30.071421"
+       id="image3063"
+       xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/memit.png"
+       height="603"
+       width="803" />
+    <image
+       y="265.14789"
+       x="-30.284187"
+       id="image3436"
+       xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/memitf.png"
+       height="603"
+       width="803" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="game">
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.4;fill:none;stroke:#d38d5f;stroke-width:1.08862591;stroke-miterlimit:4;stroke-dasharray:none"
+       id="placeholder0"
+       sodipodi:cx="32.787235"
+       sodipodi:cy="568.43085"
+       sodipodi:rx="31.361702"
+       sodipodi:ry="33.856384"
+       d="m 64.148937,568.43085 a 31.361702,33.856384 0 1 1 -62.7234037,0 31.361702,33.856384 0 1 1 62.7234037,0 z"
+       inkscape:label="#placeholder0"
+       transform="matrix(1.0035886,0,0,0.92963986,-0.90489337,42.564027)" />
+    <g
+       id="casa0"
+       transform="translate(14,-34)">
+      <use
+         id="use3130"
+         xlink:href="#placeholder0"
+         y="0"
+         x="0"
+         width="803"
+         height="603" />
+      <image
+         width="70"
+         height="70"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_00.png"
+         id="p0"
+         x="0"
+         y="533" />
+    </g>
+    <g
+       transform="translate(14,-106)"
+       id="casa1">
+      <use
+         height="603"
+         width="803"
+         x="0"
+         y="0"
+         xlink:href="#placeholder0"
+         id="use3137" />
+      <image
+         width="70"
+         height="70"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_01.png"
+         id="p1"
+         x="0"
+         y="533" />
+    </g>
+    <g
+       id="casa2"
+       transform="translate(14,-174)">
+      <use
+         id="use3141"
+         xlink:href="#placeholder0"
+         y="0"
+         x="0"
+         width="803"
+         height="603" />
+      <image
+         width="70"
+         height="70"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_02.png"
+         id="p2"
+         x="0"
+         y="533" />
+    </g>
+    <g
+       transform="translate(14,-242)"
+       id="casa3">
+      <use
+         height="603"
+         width="803"
+         x="0"
+         y="0"
+         xlink:href="#placeholder0"
+         id="use3145" />
+      <image
+         width="70"
+         height="70"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_03.png"
+         id="p3"
+         x="0"
+         y="533" />
+    </g>
+    <g
+       id="casa4"
+       transform="translate(14,-314)">
+      <use
+         id="use3149"
+         xlink:href="#placeholder0"
+         y="0"
+         x="0"
+         width="803"
+         height="603" />
+      <image
+         width="70"
+         height="70"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_04.png"
+         id="p4"
+         x="0"
+         y="533" />
+    </g>
+    <g
+       id="casa5"
+       transform="translate(14,-384)">
+      <use
+         id="use3157"
+         xlink:href="#placeholder0"
+         y="0"
+         x="0"
+         width="803"
+         height="603" />
+      <image
+         y="533"
+         x="0"
+         id="p5"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_05.png"
+         height="70"
+         width="70" />
+    </g>
+    <g
+       transform="translate(624,-34)"
+       id="casa6">
+      <use
+         height="603"
+         width="803"
+         x="0"
+         y="0"
+         xlink:href="#placeholder0"
+         id="use3161" />
+      <image
+         y="533"
+         x="0"
+         id="p6"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_06.png"
+         height="70"
+         width="70" />
+    </g>
+    <g
+       id="casa7"
+       transform="translate(624,-106)">
+      <use
+         id="use3165"
+         xlink:href="#placeholder0"
+         y="0"
+         x="0"
+         width="803"
+         height="603" />
+      <image
+         y="533"
+         x="0"
+         id="p7"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_07.png"
+         height="70"
+         width="70" />
+    </g>
+    <g
+       transform="translate(624,-174)"
+       id="casa8">
+      <use
+         height="603"
+         width="803"
+         x="0"
+         y="0"
+         xlink:href="#placeholder0"
+         id="use3169" />
+      <image
+         y="533"
+         x="0"
+         id="p8"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/piece01_08.png"
+         height="70"
+         width="70" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:45.71692276px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="470.85999"
+       y="59.717106"
+       id="text3582"
+       sodipodi:linespacing="125%"
+       transform="scale(0.87494954,1.142923)"><tspan
+         sodipodi:role="line"
+         id="tspan3584"
+         x="470.85999"
+         y="59.717106">O</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.4;fill:#ff0000;stroke:none"
+       id="mred"
+       sodipodi:cx="39.55851"
+       sodipodi:cy="561.30316"
+       sodipodi:rx="37.420212"
+       sodipodi:ry="42.409573"
+       d="m 76.978722,561.30316 a 37.420212,42.409573 0 1 1 -74.840424,0 37.420212,42.409573 0 1 1 74.840424,0 z"
+       transform="matrix(0.92271583,0,0,0.81416104,78.498737,111.00883)" />
+    <path
+       transform="matrix(0.92271583,0,0,0.81416104,38.498737,111.00883)"
+       d="m 76.978722,561.30316 a 37.420212,42.409573 0 1 1 -74.840424,0 37.420212,42.409573 0 1 1 74.840424,0 z"
+       sodipodi:ry="42.409573"
+       sodipodi:rx="37.420212"
+       sodipodi:cy="561.30316"
+       sodipodi:cx="39.55851"
+       id="mgreen"
+       style="opacity:0.4;fill:#00ff00;stroke:none"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.4;fill:#0000ff;stroke:none"
+       id="mblue"
+       sodipodi:cx="39.55851"
+       sodipodi:cy="561.30316"
+       sodipodi:rx="37.420212"
+       sodipodi:ry="42.409573"
+       d="m 76.978722,561.30316 a 37.420212,42.409573 0 1 1 -74.840424,0 37.420212,42.409573 0 1 1 74.840424,0 z"
+       transform="matrix(0.92271583,0,0,0.81416104,58.498737,111.00883)" />
+    <g
+       id="puzzler"
+       transform="translate(588,-352)">
+      <use
+         height="603"
+         width="803"
+         id="use3573"
+         xlink:href="#placeholder0"
+         y="0"
+         x="0" />
+      <image
+         y="503"
+         x="0"
+         id="puzzle00"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/puzzle00_00.png"
+         height="100"
+         width="127" />
+      <image
+         y="503"
+         x="0"
+         id="jig0"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/puzzle_00.png"
+         height="100"
+         width="127" />
+      <image
+         y="503"
+         x="0"
+         id="jig1"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/puzzle_01.png"
+         height="100"
+         width="127" />
+      <image
+         y="503"
+         x="0"
+         id="jig2"
+         xlink:href="file:///home/carlo/Documentos/dev/memit/src/public/image/puzzle_02.png"
+         height="100"
+         width="127" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="cubelow"
+     style="display:inline">
+    <g
+       id="nichosbot"
+       transform="translate(-46,-50)">
+      <g
+         transform="translate(328,-208)"
+         id="nicho18">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3174" />
+      </g>
+      <g
+         id="nicho19"
+         transform="translate(428,-208)">
+        <use
+           id="use3180"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(528,-208)"
+         id="nicho20">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3184" />
+      </g>
+      <g
+         id="nicho21"
+         transform="translate(328,-108)">
+        <use
+           id="use3188"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-108)"
+         id="nicho22">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3192" />
+      </g>
+      <g
+         id="nicho23"
+         transform="translate(528,-108)">
+        <use
+           id="use3196"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(328,-8)"
+         id="nicho24">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3200" />
+      </g>
+      <g
+         id="nicho25"
+         transform="translate(428,-8)">
+        <use
+           id="use3204"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(528,-8)"
+         id="nicho26">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3208" />
+      </g>
+    </g>
+    <g
+       id="nichosmid"
+       transform="translate(-118,-120)">
+      <g
+         id="nicho9"
+         transform="translate(328,-208)">
+        <use
+           id="use3212"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-208)"
+         id="nicho10">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3216" />
+      </g>
+      <g
+         id="nicho11"
+         transform="translate(528,-208)">
+        <use
+           id="use3220"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(328,-108)"
+         id="nicho12">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3224" />
+      </g>
+      <g
+         id="nicho13"
+         transform="translate(428,-108)">
+        <use
+           id="use3228"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(528,-108)"
+         id="nicho14">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3232" />
+      </g>
+      <g
+         id="nicho15"
+         transform="translate(328,-8)">
+        <use
+           id="use3236"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-8)"
+         id="nicho16">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3240" />
+      </g>
+      <g
+         id="nicho17"
+         transform="translate(528,-8)">
+        <use
+           id="use3244"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+    </g>
+    <g
+       transform="translate(-188,-192)"
+       id="nichostop">
+      <g
+         transform="translate(328,-208)"
+         id="nicho0">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3270" />
+      </g>
+      <g
+         id="nicho1"
+         transform="translate(428,-208)">
+        <use
+           id="use3274"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(528,-208)"
+         id="nicho2">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3278" />
+      </g>
+      <g
+         id="nicho3"
+         transform="translate(328,-108)">
+        <use
+           id="use3282"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-108)"
+         id="nicho4">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3286" />
+      </g>
+      <g
+         id="nicho5"
+         transform="translate(528,-108)">
+        <use
+           id="use3290"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(328,-8)"
+         id="nicho6">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3294" />
+      </g>
+      <g
+         id="nicho7"
+         transform="translate(428,-8)">
+        <use
+           id="use3298"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(528,-8)"
+         id="nicho8">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3302" />
+      </g>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="marker"
+     style="display:none">
+    <g
+       id="mleft"
+       transform="translate(-266,-122)">
+      <g
+         id="mleft0"
+         transform="translate(358,-276)">
+        <use
+           id="use3444"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-208)"
+         id="mleft1">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3448" />
+      </g>
+      <g
+         id="mleft2"
+         transform="translate(500,-132)">
+        <use
+           id="use3452"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(358,-176)"
+         id="mleft3">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3456" />
+      </g>
+      <g
+         id="mleft4"
+         transform="translate(428,-108)">
+        <use
+           id="use3460"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(500,-32)"
+         id="mleft5">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3464" />
+      </g>
+      <g
+         id="mleft6"
+         transform="translate(358,-76)">
+        <use
+           id="use3468"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-8)"
+         id="mleft7">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3472" />
+      </g>
+      <g
+         id="mleft8"
+         transform="translate(500,68)">
+        <use
+           id="use3476"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+    </g>
+    <g
+       transform="translate(-118,-270)"
+       id="mtop">
+      <g
+         transform="translate(268,-168)"
+         id="mtop0">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3501" />
+      </g>
+      <g
+         id="mtop1"
+         transform="translate(368,-168)">
+        <use
+           id="use3505"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(468,-168)"
+         id="mtop2">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3509" />
+      </g>
+      <g
+         id="mtop3"
+         transform="translate(328,-108)">
+        <use
+           id="use3513"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-108)"
+         id="mtop4">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3517" />
+      </g>
+      <g
+         id="mtop5"
+         transform="translate(528,-108)">
+        <use
+           id="use3521"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(398,-40)"
+         id="mtop6">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3525" />
+      </g>
+      <g
+         id="mtop7"
+         transform="translate(498,-40)">
+        <use
+           id="use3529"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(598,-40)"
+         id="mtop8">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3533" />
+      </g>
+    </g>
+    <g
+       id="mbottom"
+       transform="translate(-16,-18)"
+       style="display:inline">
+      <g
+         id="mbottom0"
+         transform="translate(328,-208)">
+        <use
+           id="use3539"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-208)"
+         id="mbottom1">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3543" />
+      </g>
+      <g
+         id="mbottom2"
+         transform="translate(528,-208)">
+        <use
+           id="use3547"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(328,-108)"
+         id="mbottom3">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3551" />
+      </g>
+      <g
+         id="mbottom4"
+         transform="translate(428,-108)">
+        <use
+           id="use3555"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(528,-108)"
+         id="mbottom5">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3559" />
+      </g>
+      <g
+         id="mbottom6"
+         transform="translate(328,-8)">
+        <use
+           id="use3563"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+      <g
+         transform="translate(428,-8)"
+         id="mbottom7">
+        <use
+           height="603"
+           width="803"
+           x="0"
+           y="0"
+           xlink:href="#placeholder0"
+           id="use3567" />
+      </g>
+      <g
+         id="mbottom8"
+         transform="translate(528,-8)">
+        <use
+           id="use3571"
+           xlink:href="#placeholder0"
+           y="0"
+           x="0"
+           width="803"
+           height="603" />
+      </g>
+    </g>
+  </g>
+</svg>
