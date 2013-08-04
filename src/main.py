@@ -27,7 +27,7 @@ LIBS = DIR + '../libs/lib'
 IMGS = DIR + 'studio/memit'
 
 @route('/')
-@view(DIR+'meme')
+@view(DIR+'head')
 def main():
     try:
         doc_id, doc_rev = database.DRECORD.save({'type': 'Memit', 'date': str(datetime.now())})
@@ -59,20 +59,27 @@ def retrieve_data(req):
     print (jdata)
     return json.loads(jdata)
 
+def retrieve_params(req):
+    doc_id = req.pop('doc_id')
+    data = {k:req[k] for k in req}
+    print (doc_id,data)
+    return {doc_id:data}
 
-@post('/record/head')
+
+@post('/head')
+@view(DIR+'meme')
 def record_head():
-    json = retrieve_data(request.params)
+    json = retrieve_params(request.params)
     try:
         record_id = json.keys()[0]
         print(json[record_id],record_id)
         record = database.DRECORD[record_id]
-        print('record:',record)
         record[HEA]=json[record_id]
         record[PEC]=[]
         record[PHA]=[]
         database.DRECORD[record_id] = record
-        return record
+        print('record:',database.DRECORD[record_id])
+        return dict(doc_id = record_id)
     except Exception:
         return "Cabeçalho não foi gravado %s"%str(request.params.values())#str([p for p in request.params])
 
