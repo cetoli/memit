@@ -32,7 +32,7 @@ Memit - Serious Game in cavalier projection for memetics
         <div id="data">
             <form action="head" id="head" method="post" name="Head">
                 <input name="doc_id" id="doc_id" value="{{ doc_id }}" type="hidden" />
-                <table border="0" cellpadding="1" cellspacing="1" style="width:600px">
+                <table border="0" cellpadding="1" cellspacing="1" style="width:1000px">
                     <tbody>
                         <tr style="padding:50px; margin:50px">
                             <td>&nbsp;</td>
@@ -45,29 +45,29 @@ Memit - Serious Game in cavalier projection for memetics
                         <tr style="padding:50px; margin:50px">
 
                             <td><input name="age" id="age18" value="age18" type="radio" />
-                                <label for="age18"><img alt="Age 18 to 24" title="Age 18 to 24" src="studio/memit/18_anos.jpg" style="margin-top:80px; height:50px;" /></label></td>
+                                <label for="age18"><img alt="Age 18 to 24" title="Age 18 to 24" src="studio/memit/18_anos.jpg" style="margin-top:80px; height:100px;" /></label></td>
                             <td><input name="age" id="age25" value="age25" type="radio" />
-                                <label for="age25"><img alt="Age 25 to 44" title="Age 25 to 44" src="studio/memit/25_anos.jpg" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="age25"><img alt="Age 25 to 44" title="Age 25 to 44" src="studio/memit/25_anos.jpg" style="margin-top: 80px; height:100px;" /></label></td>
                             <td><input name="age" id="age45" value="age45" type="radio" />
-                                <label for="age45"><img alt="Age 45 to 64" title="Age 45 to 64" src="studio/memit/45_anos.jpg" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="age45"><img alt="Age 45 to 64" title="Age 45 to 64" src="studio/memit/45_anos.jpg" style="margin-top: 80px; height:100px;" /></label></td>
                             <td><input name="age" id="age65" value="age65" type="radio" />
-                                <label for="age65"><img alt="Age 65 to 124" title="Age 65 to 124" src="studio/memit/65_anos.jpg" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="age65"><img alt="Age 65 to 124" title="Age 65 to 124" src="studio/memit/65_anos.jpg" style="margin-top: 80px; height:100px;" /></label></td>
                         </tr>
                         <tr style="padding:50px; margin:50px">
                             <td><input name="budget" id="budget18" value="budget18" type="radio" />
-                                <label for="budget18"><img alt="Budget 1800 to 2400" title="Budget 1800 to 2400" src="studio/memit/18_budget.jpg" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="budget18"><img alt="Budget 1800 to 2400" title="Budget 1800 to 2400" src="studio/memit/18_budget.jpg" style="margin-top: 80px; height:90px;" /></label></td>
                             <td><input name="budget" id="budget25" value="budget25" type="radio" />
-                                <label for="budget25"><img alt="Budget 2500 to 4400" title="Budget 2500 to 4400" src="studio/memit/25_budget.jpg" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="budget25"><img alt="Budget 2500 to 4400" title="Budget 2500 to 4400" src="studio/memit/25_budget.jpg" style="margin-top: 80px; height:90px;" /></label></td>
                             <td><input name="budget" id="budget45" value="budget45" type="radio" />
-                                <label for="budget45"><img alt="Budget 4500 to 6400" title="Budget 4500 to 6400" src="studio/memit/45_budget.jpg" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="budget45"><img alt="Budget 4500 to 6400" title="Budget 4500 to 6400" src="studio/memit/45_budget.jpg" style="margin-top: 80px; height:90px;" /></label></td>
                             <td><input name="budget" id="budget65" value="budget65" type="radio" />
-                                <label for="budget65"><img alt="Budget 6500 and +" title="Budget 6500 and +" src="studio/memit/65_budget.png" style="margin-top: 80px; height:50px;" /></label></td>
+                                <label for="budget65"><img alt="Budget 6500 and +" title="Budget 6500 and +" src="studio/memit/65_budget.png" style="margin-top: 80px; height:90px;" /></label></td>
                         </tr>
                         <tr style="padding:50px; margin:50px">
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td><input alt="" src="studio/memit/continue_arrow.png" style="margin-top: 80px; height: 50px;" type="image" /></td>
+                            <td><input alt="" src="studio/memit/continue_arrow.png" style="margin-top: 80px; height: 100px;" type="image" /></td>
                         </tr>
                     </tbody>
                 </table>
